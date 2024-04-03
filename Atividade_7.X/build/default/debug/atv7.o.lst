@@ -1,0 +1,757 @@
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00002 ;*              MODIFICAÇÕES PARA USO COM 12F675                   *
+                      00003 ;*                FEITAS PELO PROF. MARDSON                        *
+                      00004 ;*                     MARÇO DE 2024                               *
+                      00005 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00006 
+                      00007 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00008 ;*                       NOME DO PROJETO                           *
+                      00009 ;*                           CLIENTE                               *
+                      00010 ;*         DESENVOLVIDO PELA MOSAICO ENGENHARIA E CONSULTORIA      *
+                      00011 ;*   VERSÃO: 1.0                           DATA: 17/06/03          *
+                      00012 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00013 ;*                     DESCRIÇÃO DO ARQUIVO                        *
+                      00014 ;*-----------------------------------------------------------------*
+                      00015 ;*   MODELO PARA O PIC 12F675                                      *
+                      00016 ;*                                                                 *
+                      00017 ;*                                                                 *
+                      00018 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00019 
+                      00020 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00021 ;*                     ARQUIVOS DE DEFINIÇÕES                      *
+                      00022 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00023 #INCLUDE <p12f675.inc>  ;ARQUIVO PADRÃO MICROCHIP PARA 12F675
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Nov 22 2017
+                      00005 ;  MPASM PIC12F675 processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2017 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00367         LIST
+                      00024 
+2007   3FA4           00025         __CONFIG _BODEN_OFF & _CP_OFF & _PWRTE_ON & _WDT_OFF & _MCLRE_ON & _INTRC_OSC_NOCLKOUT
+                      00026 
+                      00027 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00028 ;*                    PAGINAÇÃO DE MEMÓRIA                         *
+                      00029 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00030 ;DEFINIÇÃO DE COMANDOS DE USUÁRIO PARA ALTERAÇÃO DA PÁGINA DE MEMÓRIA
+                      00031 #DEFINE BANK0   BCF STATUS,RP0  ;SETA BANK 0 DE MEMÓRIA
+                      00032 #DEFINE BANK1   BSF STATUS,RP0  ;SETA BANK 1 DE MAMÓRIA
+                      00033 
+                      00034 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00035 ;*                         VARIÁVEIS                               *
+                      00036 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00037 ; DEFINIÇÃO DOS NOMES E ENDEREÇOS DE TODAS AS VARIÁVEIS UTILIZADAS 
+                      00038 ; PELO SISTEMA
+                      00039 
+                      00040         CBLOCK  0x20    ;ENDEREÇO INICIAL DA MEMÓRIA DE
+                      00041                                         ;USUÁRIO
+  00000020            00042                 W_TEMP          ;REGISTRADORES TEMPORÁRIOS PARA USO
+  00000021            00043                 STATUS_TEMP     ;JUNTO ÀS INTERRUPÇÕES
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  00000022            00044                 DADO            ;ARMAZENA O DADO PARA A EEPROM
+                      00045 
+                      00046                 ;NOVAS VARIÁVEIS
+  00000023            00047                 CONTADOR
+  00000024            00048                 CONTADOR_DIV
+  00000025            00049                 SOMA_L
+  00000026            00050                 SOMA_H
+  00000027            00051                 DELTA_L
+  00000028            00052                 DELTA_H
+  00000029            00053                 T0_L
+  0000002A            00054                 T0_H
+  0000002B            00055                 T1_L
+  0000002C            00056                 T1_H
+  0000002D            00057                 AUX_L
+  0000002E            00058                 AUX_H
+                      00059 
+                      00060         ENDC                    ;FIM DO BLOCO DE MEMÓRIA
+                      00061 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00062 ;*                        FLAGS INTERNOS                           *
+                      00063 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00064 ; DEFINIÇÃO DE TODOS OS FLAGS UTILIZADOS PELO SISTEMA
+                      00065 
+                      00066 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00067 ;*                         CONSTANTES                              *
+                      00068 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00069 ; DEFINIÇÃO DE TODAS AS CONSTANTES UTILIZADAS PELO SISTEMA
+                      00070 ; INICIALIZAÇÃO DA EEPROM, DE ACORDO COM A DESCRIÇÃO NO ARQUIVO "Def_Rega_Formigas.inc"
+                      00071         
+                      00072         #DEFINE ARRAY .50
+                      00073         #DEFINE TAM_ARRAY .32
+                      00074         
+                      00075         #DEFINE TH_0 .154
+                      00076         #DEFINE TH_1 .57
+                      00077         
+                      00078         #DEFINE EEPTR_MEDIA H'2A'
+                      00079 
+                      00080 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00081 ;*                           ENTRADAS                              *
+                      00082 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00083 ; DEFINIÇÃO DE TODOS OS PINOS QUE SERÃO UTILIZADOS COMO ENTRADA
+                      00084 ; RECOMENDAMOS TAMBÉM COMENTAR O SIGNIFICADO DE SEUS ESTADOS (0 E 1)
+                      00085 
+                      00086 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00087 ;*                           SAÍDAS                                *
+                      00088 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00089 ; DEFINIÇÃO DE TODOS OS PINOS QUE SERÃO UTILIZADOS COMO SAÍDA
+                      00090 ; RECOMENDAMOS TAMBÉM COMENTAR O SIGNIFICADO DE SEUS ESTADOS (0 E 1)
+                      00091         
+                      00092         #DEFINE PULSO GP2
+                      00093 
+                      00094 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00095 ;*                       VETOR DE RESET                            *
+                      00096 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00097 
+0000                  00098         ORG     0x00                    ;ENDEREÇO INICIAL DE PROCESSAMENTO
+0000   2869           00099         GOTO    INICIO
+                      00100         
+                      00101 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00102 ;*                    INÍCIO DA INTERRUPÇÃO                        *
+                      00103 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00104 ; ENDEREÇO DE DESVIO DAS INTERRUPÇÕES. A PRIMEIRA TAREFA É SALVAR OS
+                      00105 ; VALORES DE "W" E "STATUS" PARA RECUPERAÇÃO FUTURA
+                      00106 
+0004                  00107         ORG     0x04                    ;ENDEREÇO INICIAL DA INTERRUPÇÃO
+0004   00A0           00108         MOVWF   W_TEMP          ;COPIA W PARA W_TEMP
+0005   0E03           00109         SWAPF   STATUS,W
+0006   00A1           00110         MOVWF   STATUS_TEMP     ;COPIA STATUS PARA STATUS_TEMP
+                      00111 
+                      00112 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00113 ;*                    ROTINA DE INTERRUPÇÃO                        *
+                      00114 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00115 ; AQUI SERÃO ESCRITAS AS ROTINAS DE RECONHECIMENTO E TRATAMENTO DAS
+                      00116 ; INTERRUPÇÕES
+                      00117         
+0007   100C           00118         BCF PIR1, TMR1IF
+0008   1D05           00119         BTFSS GPIO, PULSO ; TROCANDO VALOR DO PULSO DE CARGA
+0009   280F           00120         GOTO CURVA_SUBIDA
+                      00121         
+Warning[207]: Found label after column 1. (CURVA_DESCIDA)
+000A                  00122         CURVA_DESCIDA
+Message[305]: Using default destination of 1 (file).
+000A   0AA3           00123             INCF CONTADOR ; INCREMENTANDO O CONTADOR DE MEDIÇÕES
+000B   1105           00124             BCF GPIO, PULSO ; GERANDO A CURVA DE RESPOSTA DESCENDENTE
+000C   2016           00125             CALL MEDIR_RC
+Message[305]: Using default destination of 1 (file).
+000D   0A84           00126             INCF FSR
+000E   2811           00127             GOTO SAI_INT
+                      00128         
+Warning[207]: Found label after column 1. (CURVA_SUBIDA)
+000F                  00129         CURVA_SUBIDA
+000F   1505           00130             BSF GPIO, PULSO ; GERANDO A CURVA DE RESPOSTA ASCENDENTE
+0010   2811           00131             GOTO SAI_INT
+                      00132 
+                      00133 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00134 ;*                 ROTINA DE SAÍDA DA INTERRUPÇÃO                  *
+                      00135 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00136 ; OS VALORES DE "W" E "STATUS" DEVEM SER RECUPERADOS ANTES DE 
+                      00137 ; RETORNAR DA INTERRUPÇÃO
+                      00138 
+0011                  00139 SAI_INT
+0011   0E21           00140         SWAPF   STATUS_TEMP,W
+0012   0083           00141         MOVWF   STATUS          ;MOVE STATUS_TEMP PARA STATUS
+0013   0EA0           00142         SWAPF   W_TEMP,F
+0014   0E20           00143         SWAPF   W_TEMP,W        ;MOVE W_TEMP PARA W
+0015   0009           00144         RETFIE
+                      00145 
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00146 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00147 ;*                       ROTINAS E SUBROTINAS                      *
+                      00148 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00149 ; CADA ROTINA OU SUBROTINA DEVE POSSUIR A DESCRIÇÃO DE FUNCIONAMENTO
+                      00150 ; E UM NOME COERENTE ÀS SUAS FUNÇÕES.
+                      00151 
+                      00152 ; ESPERA A TENSÃO CHEGAR EM 3V, E ENTÃO EM 1,1036V, REGISTRA E SUBTRAI OS TEMPOS
+                      00153 ; EM CADA UM DESSES DOIS EVENTOS, MEDINDO ASSIM A CONSTANTE DE TEMPO
+0016                  00154 MEDIR_RC
+0016   141F           00155         BSF ADCON0, ADON ; ATIVANDO MEDIÇÕES DO CONVERSOR
+Warning[207]: Found label after column 1. (MEDIR_T0)
+0017                  00156         MEDIR_T0
+0017   149F           00157             BSF ADCON0, GO
+Warning[207]: Found label after column 1. (ESPERAR_MEDIDA_T0)
+0018                  00158             ESPERAR_MEDIDA_T0
+0018   189F           00159                 BTFSC ADCON0, GO
+0019   2818           00160                 GOTO ESPERAR_MEDIDA_T0
+001A   081E           00161             MOVFW ADRESH ; PEGANDO VALOR MEDIDO PELO CONVERSOR A/D
+001B   3C9A           00162             SUBLW TH_0 ; THRESHOLD EQUIVALENTE A 3V
+001C   1C03           00163             BTFSS STATUS, C ; CHECANDO SE A MEDIDA PASSOU PRA BAIXO DO THRESHOLD
+001D   2817           00164             GOTO MEDIR_T0
+001E   080E           00165         MOVFW TMR1L
+001F   00A9           00166         MOVWF T0_L
+0020   080F           00167         MOVFW TMR1H
+0021   00AA           00168         MOVWF T0_H
+Warning[207]: Found label after column 1. (MEDIR_T1)
+0022                  00169         MEDIR_T1
+0022   149F           00170             BSF ADCON0, GO
+Warning[207]: Found label after column 1. (ESPERAR_MEDIDA_T1)
+0023                  00171             ESPERAR_MEDIDA_T1
+0023   189F           00172                 BTFSC ADCON0, GO
+0024   2823           00173                 GOTO ESPERAR_MEDIDA_T1
+0025   081E           00174             MOVFW ADRESH ; PEGANDO VALOR MEDIDO PELO CONVERSOR A/D
+0026   3C39           00175             SUBLW TH_1 ; THRESHOLD EQUIVALENTE A 1,1036V
+0027   1C03           00176             BTFSS STATUS, C ; CHECANDO SE A MEDIDA PASSOU PRA BAIXO DO THRESHOLD
+0028   2822           00177             GOTO MEDIR_T1
+0029   080E           00178         MOVFW TMR1L
+002A   00AB           00179         MOVWF T1_L
+002B   080F           00180         MOVFW TMR1H
+002C   00AC           00181         MOVWF T1_H
+002D   101F           00182         BCF ADCON0, ADON ; DESATIVANDO CONVERSOR, PARA SALVAR ENERGIA
+                      00183         
+                      00184         ; SUBTRAÇÃO DE 2 BYTES
+002E   0829           00185         MOVFW T0_L
+002F   022B           00186         SUBWF T1_L, W
+0030   00A7           00187         MOVWF DELTA_L
+0031   1803           00188         BTFSC STATUS, C
+0032   2834           00189         GOTO NAO_HOUVE_BORROW
+Message[305]: Using default destination of 1 (file).
+0033   03AC           00190             DECF T1_H
+Warning[207]: Found label after column 1. (NAO_HOUVE_BORROW)
+0034                  00191         NAO_HOUVE_BORROW
+0034   082A           00192         MOVFW T0_H
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0035   022C           00193         SUBWF T1_H, W
+0036   00A8           00194         MOVWF DELTA_H
+                      00195         
+                      00196         ; DIVIDINDO A DIFERENÇA POR 125, PARA OBTER O TEMPO REAL EM MILISSEGUNDOS
+                      00197         ; PREPARANDO PARA A CONTAGEM
+0037   01A5           00198         CLRF SOMA_L
+0038   01A6           00199         CLRF SOMA_H
+0039   01A4           00200         CLRF CONTADOR_DIV
+                      00201         
+                      00202         ; ENQUANTO ACUMULADOR (2 BYTES) <= DELTA (2 BYTES)
+Warning[207]: Found label after column 1. (ENQUANTO)
+003A                  00203         ENQUANTO
+                      00204             ; SUBTRAÇÃO DE 2 BYTES AUX (DELTA) - ACUMULADOR
+003A   0827           00205             MOVFW DELTA_L
+003B   00AD           00206             MOVWF AUX_L
+003C   0828           00207             MOVFW DELTA_H
+003D   00AE           00208             MOVWF AUX_H ; COPIANDO O DELTA PARA UMA VARIÁVEL AUXILIAR
+                      00209             
+003E   0825           00210             MOVFW SOMA_L
+003F   022D           00211             SUBWF AUX_L, W
+0040   1803           00212             BTFSC STATUS, C
+0041   2843           00213             GOTO NAO_HOUVE_BORROW_DIV
+Message[305]: Using default destination of 1 (file).
+0042   03AE           00214                 DECF AUX_H
+Warning[207]: Found label after column 1. (NAO_HOUVE_BORROW_DIV)
+0043                  00215             NAO_HOUVE_BORROW_DIV
+0043   0826           00216             MOVFW SOMA_H
+0044   022E           00217             SUBWF AUX_H, W
+0045   1C03           00218             BTFSS STATUS, C
+0046   284E           00219             GOTO FIM_ENQUANTO
+                      00220             
+                      00221             ; CORPO DO ENQUANTO
+0047   307D           00222             MOVLW .125
+Message[305]: Using default destination of 1 (file).
+0048   07A5           00223             ADDWF SOMA_L ; ACUMULADOR <- ACUMULADOR + DIVISOR
+0049   1C03           00224             BTFSS STATUS, C
+004A   284C           00225             GOTO SEM_CARRY_DIV
+Message[305]: Using default destination of 1 (file).
+004B   0AA6           00226                 INCF SOMA_H
+Warning[207]: Found label after column 1. (SEM_CARRY_DIV)
+004C                  00227             SEM_CARRY_DIV
+Message[305]: Using default destination of 1 (file).
+004C   0AA4           00228             INCF CONTADOR_DIV
+004D   283A           00229             GOTO ENQUANTO
+Warning[207]: Found label after column 1. (FIM_ENQUANTO)
+004E                  00230         FIM_ENQUANTO
+                      00231         
+                      00232         ; CORRIGINDO O RESULTADO DA DIVISÃO
+004E   0324           00233         DECF CONTADOR_DIV, W
+004F   0080           00234         MOVWF INDF ; SALVANDO MEDIÇÃO EM ms NO ARRAY
+0050   0008           00235         RETURN
+                      00236         
+0051                  00237 LE_EEPROM
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00238 ;LER DADO DA EEPROM, CUJO ENDEREÇO É INDICADO EM W
+                      00239 ;O DADO LIDO RETORNA EM W
+0051   397F           00240         ANDLW   .127            ;LIMITA ENDEREÇO MAX. 127
+0052   1683           00241         BANK1                           ;ACESSO VIA BANK 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0053   009B           00242         MOVWF   EEADR           ;INDICA O END. DE LEITURA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0054   141C           00243         BSF             EECON1,RD       ;INICIA O PROCESSO DE LEITURA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0055   081A           00244         MOVF    EEDATA,W        ;COLOCA DADO LIDO EM W
+0056   1283           00245         BANK0                           ;POSICIONA PARA BANK 0
+0057   0008           00246         RETURN
+                      00247 
+0058                  00248 GRAVA_EEPROM
+                      00249 ;ESCREVE UM DADO NA EEPROM, CUJO ENDEREÇO É INDICADO EM W
+                      00250 ;O DADO A SER ESCRITO DEVE ESTAR ARMAZENADO NA VARIÁVEL DADO
+0058   397F           00251         ANDLW   .127            ;LIMITA ENDEREÇO MAX. 127
+0059   1683           00252         BANK1                           ;ACESSO VIA BANK 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+005A   009B           00253         MOVWF   EEADR
+005B   0822           00254         MOVF    DADO,W
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+005C   009A           00255         MOVWF   EEDATA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+005D   151C           00256         BSF             EECON1,WREN ;HABILITA ESCRITA
+005E   138B           00257         BCF             INTCON,GIE      ;DESLIGA INTERRUPÇÕES
+005F   3055           00258         MOVLW   B'01010101'     ;DESBLOQUEIA ESCRITA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0060   009D           00259         MOVWF   EECON2          ;
+0061   30AA           00260         MOVLW   B'10101010'     ;DESBLOQUEIA ESCRITA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0062   009D           00261         MOVWF   EECON2          ;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0063   149C           00262         BSF             EECON1,WR ;INICIA A ESCRITA
+0064                  00263 AGUARDA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0064   189C           00264         BTFSC   EECON1,WR ;TERMINOU?
+0065   2864           00265         GOTO    AGUARDA
+0066   178B           00266         BSF             INTCON,GIE ;HABILITA INTERRUPÇÕES
+0067   1283           00267         BANK0                           ;POSICIONA PARA BANK 0
+0068   0008           00268         RETURN
+                      00269 
+                      00270 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00271 ;*                     INICIO DO PROGRAMA                          *
+                      00272 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00273         
+0069                  00274 INICIO
+0069   1683           00275         BANK1                   ;ALTERA PARA O BANCO 1
+006A   3002           00276         MOVLW   B'00000010'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+006B   0085           00277         MOVWF   TRISIO          ;GP2 SAÍDA, GP1 ENTRADA
+006C   3000           00278         MOVLW   B'00000000'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+006D   009F           00279         MOVWF   ANSEL           ;GP1 ANALÓGICA
+006E   3004           00280         MOVLW   B'00000100'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+006F   0081           00281         MOVWF   OPTION_REG      ;DEFINE OPÇÕES DE OPERAÇÃO
+0070   30C0           00282         MOVLW   B'11000000'
+0071   008B           00283         MOVWF   INTCON          ;ATIVA INTERRUPÇÕES POR PERIFÉRICOS
+0072   3001           00284         MOVLW   B'00000001'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0073   008C           00285         MOVWF   PIE1            ;ATIVA INTERRUPÇÕES DO TMR1
+0074   1283           00286         BANK0                   ;RETORNA PARA O BANCO
+0075   3004           00287         MOVLW   B'00000100'
+0076   0099           00288         MOVWF   CMCON           ;MODO 100 (VREF INTERNO E COUT ISOLADO)
+0077   3035           00289         MOVLW   B'00110101'
+0078   0090           00290         MOVWF   T1CON           ;ATIVA TMR1, PRESCALER 1:8
+                      00291         
+                      00292         ; LEFT JUSTIFIED, VDD COMO REF, LEITURA NA AN1, SEM LEITURA E CONVERSOR DESATIVADO
+0079   3004           00293         MOVLW   B'00000100'
+007A   009F           00294         MOVWF   ADCON0
+                      00295 
+                      00296 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00297 ;*                     INICIALIZAÇÃO DAS VARIÁVEIS                 *
+                      00298 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00299         
+                      00300         ; ZERANDO O TMR1
+007B   018E           00301         CLRF TMR1L
+007C   018F           00302         CLRF TMR1H
+                      00303 
+                      00304 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00305 ;*                     ROTINA PRINCIPAL                            *
+                      00306 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+007D                  00307 MAIN
+007D   3032           00308         MOVLW ARRAY
+007E   0084           00309         MOVWF FSR ; APONTANDO PARA O INÍCIO DO ARRAY
+007F   01A3           00310         CLRF CONTADOR ; INICIANDO CONTADOR DA DURAÇÃO DO CICLO DE ESCRITA
+                      00311         
+                      00312         ; ESPERA TODAS AS MEDIÇÕES OCORREREM
+Warning[207]: Found label after column 1. (MEDINDO_RC)
+0080                  00313         MEDINDO_RC
+0080   3020           00314             MOVLW TAM_ARRAY
+0081   0223           00315             SUBWF CONTADOR, W
+0082   1D03           00316             BTFSS STATUS, Z
+0083   2880           00317             GOTO MEDINDO_RC
+                      00318         
+                      00319         ; SOMANDO OS ELEMENTOS DO ARRAY
+0084   01A5           00320         CLRF SOMA_L
+0085   01A6           00321         CLRF SOMA_H
+0086   3020           00322         MOVLW TAM_ARRAY
+0087   00A3           00323         MOVWF CONTADOR
+0088   3032           00324         MOVLW ARRAY
+0089   0084           00325         MOVWF FSR ; COMEÇANDO A SOMA PELO PRIMEIRO ELEMENTO
+Warning[207]: Found label after column 1. (SOMAR)
+008A                  00326         SOMAR
+008A   0800           00327             MOVFW INDF
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Message[305]: Using default destination of 1 (file).
+008B   07A5           00328             ADDWF SOMA_L
+008C   1C03           00329             BTFSS STATUS, C
+008D   288F           00330             GOTO SEM_CARRY
+Message[305]: Using default destination of 1 (file).
+008E   0AA6           00331                 INCF SOMA_H
+Warning[207]: Found label after column 1. (SEM_CARRY)
+008F                  00332             SEM_CARRY
+Message[305]: Using default destination of 1 (file).
+008F   0A84           00333             INCF FSR
+Message[305]: Using default destination of 1 (file).
+0090   0BA3           00334             DECFSZ CONTADOR
+0091   288A           00335             GOTO SOMAR
+                      00336         
+                      00337         ; DIVIDE A SOMA POR 32
+0092   1003           00338         BCF STATUS, C ; LIMPANDO O CARRY PARA NÃO CORROMPER AS ROTAÇÕES
+                      00339         ; FAZENDO 5 ROTAÇÕES À DIREITA NA VARIÁVEL SOMA DE 16 BITS
+                      00340         ; REAPROVEITANDO O CARRY DA ROTAÇÃO DO HIGH PARA COLOCAR NO MSB DO LOW
+Message[305]: Using default destination of 1 (file).
+0093   0CA6           00341         RRF SOMA_H
+Message[305]: Using default destination of 1 (file).
+0094   0CA5           00342         RRF SOMA_L
+Message[305]: Using default destination of 1 (file).
+0095   0CA6           00343         RRF SOMA_H
+Message[305]: Using default destination of 1 (file).
+0096   0CA5           00344         RRF SOMA_L
+Message[305]: Using default destination of 1 (file).
+0097   0CA6           00345         RRF SOMA_H
+Message[305]: Using default destination of 1 (file).
+0098   0CA5           00346         RRF SOMA_L
+Message[305]: Using default destination of 1 (file).
+0099   0CA6           00347         RRF SOMA_H
+Message[305]: Using default destination of 1 (file).
+009A   0CA5           00348         RRF SOMA_L
+Message[305]: Using default destination of 1 (file).
+009B   0CA6           00349         RRF SOMA_H
+009C   0C25           00350         RRF SOMA_L, W ; ESTA ÚLTIMA ROTAÇÃO JÁ VAI CONTER O VALOR DA MÉDIA FINAL
+                      00351         
+                      00352         ; GRAVANDO A MEDIA EM 0X2A DA EEPROM
+009D   00A2           00353         MOVWF DADO ; O VALOR DA MÉDIA JÁ ESTÁ COLOCADO NO WREG
+009E   302A           00354         MOVLW EEPTR_MEDIA
+009F   2058           00355         CALL GRAVA_EEPROM
+                      00356         
+00A0   287D           00357         GOTO MAIN
+                      00358 
+                      00359 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00360 ;*                       FIM DO PROGRAMA                           *
+                      00361 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00362 
+                      00363         END
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ADCON0                            0000001F
+ADCS0                             00000004
+ADCS1                             00000005
+ADCS2                             00000006
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+AGUARDA                           00000064
+ANS0                              00000000
+ANS1                              00000001
+ANS2                              00000002
+ANS3                              00000003
+ANSEL                             0000009F
+ARRAY                             .50
+AUX_H                             0000002E
+AUX_L                             0000002D
+BANK0                             BCF STATUS,RP0
+BANK1                             BSF STATUS,RP0
+C                                 00000000
+CAL0                              00000002
+CAL1                              00000003
+CAL2                              00000004
+CAL3                              00000005
+CAL4                              00000006
+CAL5                              00000007
+CHS0                              00000002
+CHS1                              00000003
+CINV                              00000004
+CIS                               00000003
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             00000019
+CMIE                              00000003
+CMIF                              00000003
+CONTADOR                          00000023
+CONTADOR_DIV                      00000024
+COUT                              00000006
+CURVA_DESCIDA                     0000000A
+CURVA_SUBIDA                      0000000F
+DADO                              00000022
+DC                                00000001
+DELTA_H                           00000028
+DELTA_L                           00000027
+EEADR                             0000009B
+EECON1                            0000009C
+EECON2                            0000009D
+EEDAT                             0000009A
+EEDATA                            0000009A
+EEIE                              00000007
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+EEIF                              00000007
+EEPTR_MEDIA                       H'2A'
+ENQUANTO                          0000003A
+ESPERAR_MEDIDA_T0                 00000018
+ESPERAR_MEDIDA_T1                 00000023
+F                                 00000001
+FIM_ENQUANTO                      0000004E
+FSR                               00000004
+GIE                               00000007
+GO                                00000001
+GO_DONE                           00000001
+GO_NOT_DONE                       00000001
+GP0                               00000000
+GP1                               00000001
+GP2                               00000002
+GP3                               00000003
+GP4                               00000004
+GP5                               00000005
+GPIE                              00000003
+GPIF                              00000000
+GPIO                              00000005
+GPIO0                             00000000
+GPIO1                             00000001
+GPIO2                             00000002
+GPIO3                             00000003
+GPIO4                             00000004
+GPIO5                             00000005
+GRAVA_EEPROM                      00000058
+INDF                              00000000
+INICIO                            00000069
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IOC                               00000096
+IOC0                              00000000
+IOC1                              00000001
+IOC2                              00000002
+IOC3                              00000003
+IOC4                              00000004
+IOC5                              00000005
+IOCB                              00000096
+IOCB0                             00000000
+IOCB1                             00000001
+IOCB2                             00000002
+IOCB3                             00000003
+IOCB4                             00000004
+IOCB5                             00000005
+IRP                               00000007
+LE_EEPROM                         00000051
+MAIN                              0000007D
+MEDINDO_RC                        00000080
+MEDIR_RC                          00000016
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+MEDIR_T0                          00000017
+MEDIR_T1                          00000022
+NAO_HOUVE_BORROW                  00000034
+NAO_HOUVE_BORROW_DIV              00000043
+NOT_BOD                           00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000001
+NOT_GPPU                          00000007
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+OPTION_REG                        00000081
+OSCCAL                            00000090
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PIE1                              0000008C
+PIR1                              0000000C
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PULSO                             GP2
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+SAI_INT                           00000011
+SEM_CARRY                         0000008F
+SEM_CARRY_DIV                     0000004C
+SOMAR                             0000008A
+SOMA_H                            00000026
+SOMA_L                            00000025
+STATUS                            00000003
+STATUS_TEMP                       00000021
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T0_H                              0000002A
+T0_L                              00000029
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1IE                              00000000
+T1IF                              00000000
+T1OSCEN                           00000003
+T1_H                              0000002C
+T1_L                              0000002B
+TAM_ARRAY                         .32
+TH_0                              .154
+TH_1                              .57
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1GE                            00000006
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TRISIO                            00000085
+TRISIO0                           00000000
+TRISIO1                           00000001
+TRISIO2                           00000002
+TRISIO3                           00000003
+TRISIO4                           00000004
+TRISIO5                           00000005
+VCFG                              00000006
+VR0                               00000000
+VR1                               00000001
+VR2                               00000002
+VR3                               00000003
+VRCON                             00000099
+VREN                              00000007
+VRR                               00000005
+W                                 00000000
+WPU                               00000095
+WPU0                              00000000
+WPU1                              00000001
+WPU2                              00000002
+WPU4                              00000004
+WPU5                              00000005
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+W_TEMP                            00000020
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_OFF                           00003FFF
+_CP_ON                            00003F7F
+_DEVID1                           00002006
+_EC_OSC                           00003FFB
+_EXTRC_OSC_CLKOUT                 00003FFF
+_EXTRC_OSC_NOCLKOUT               00003FFE
+_FOSC_EC                          00003FFB
+_FOSC_EXTRCCLK                    00003FFF
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-28-2024  22:27:09         PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_FOSC_EXTRCIO                     00003FFE
+_FOSC_HS                          00003FFA
+_FOSC_INTRCCLK                    00003FFD
+_FOSC_INTRCIO                     00003FFC
+_FOSC_LP                          00003FF8
+_FOSC_XT                          00003FF9
+_HS_OSC                           00003FFA
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_INTRC_OSC_CLKOUT                 00003FFD
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LP_OSC                           00003FF8
+_MCLRE_OFF                        00003FDF
+_MCLRE_ON                         00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FEF
+_WDTE_OFF                         00003FF7
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FF7
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FF9
+__12F675                          00000001
+__DEBUG                           
+__MPLAB_DEBUGGER_SIMULATOR        1
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : X---XXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0080 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX X--------------- ----------------
+2000 : -------X-------- ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:   158
+Program Memory Words Free:   866
+
+
+Errors   :     0
+Warnings :    14 reported,     0 suppressed
+Messages :    34 reported,     0 suppressed
+
+

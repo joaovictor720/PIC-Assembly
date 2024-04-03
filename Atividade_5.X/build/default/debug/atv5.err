@@ -1,0 +1,14 @@
+Message[302] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 119 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[207] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 130 : Found label after column 1. (ATIVAR_DUTY_CYCLE)
+Message[302] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 137 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[207] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 147 : Found label after column 1. (INTERVALO_NAO_MINIMO)
+Message[302] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 154 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 164 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 174 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 184 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 194 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[207] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 202 : Found label after column 1. (FIM_DUTY_CYCLE)
+Message[302] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 240 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 242 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 244 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM 248 : Register in operand not in bank 0.  Ensure that bank bits are correct.

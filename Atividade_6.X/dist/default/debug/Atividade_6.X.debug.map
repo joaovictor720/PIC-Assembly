@@ -1,0 +1,60 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Sun Mar 24 00:45:29 2024
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_2       code   0x000000    program   0x000002
+                   .org_3       code   0x000004    program   0x0000ca
+.config_2007_/HOME/JV/MPLABXPROJECTS/ATIVIDAD       code   0x002007    program   0x000002
+                   .org_1       code   0x002100    program   0x000050
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000000      
+                            0x000004    0x000068      
+                            0x002007    0x002007      
+                            0x002100    0x002127      
+            143 out of 1158 program addresses used, program memory utilization is 12%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  AGUARDA   0x00001f    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+           ESPERAR_MEDIDA   0x000039    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                      FIM   0x000068    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+             GRAVAR_ARRAY   0x000060    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+             GRAVA_EEPROM   0x000013    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                   INICIO   0x000024    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                LE_EEPROM   0x00000c    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                     MAIN   0x000034    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                    MEDIR   0x000038    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                  SAI_INT   0x000007    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                SEM_CARRY   0x000049    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                    SOMAR   0x000044    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  SAI_INT   0x000007    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                LE_EEPROM   0x00000c    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+             GRAVA_EEPROM   0x000013    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                  AGUARDA   0x00001f    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                   INICIO   0x000024    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                     MAIN   0x000034    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                    MEDIR   0x000038    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+           ESPERAR_MEDIDA   0x000039    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                    SOMAR   0x000044    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                SEM_CARRY   0x000049    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+             GRAVAR_ARRAY   0x000060    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+                      FIM   0x000068    program     static /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM
+
+

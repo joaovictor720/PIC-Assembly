@@ -1,0 +1,12 @@
+Warning[207] /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM 125 : Found label after column 1. (ENQUANTO)
+Message[305] /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM 133 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM 134 : Using default destination of 1 (file).
+Warning[207] /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM 137 : Found label after column 1. (FIM_ENQUANTO)
+Warning[207] /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM 153 : Found label after column 1. (FOR_MULTIPLICAR_POR_10)
+Message[305] /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM 156 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM 158 : Using default destination of 1 (file).
+Message[302] /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM 170 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM 171 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM 173 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[305] /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM 234 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM 237 : Using default destination of 1 (file).

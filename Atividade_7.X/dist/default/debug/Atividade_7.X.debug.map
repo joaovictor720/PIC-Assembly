@@ -1,0 +1,76 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Fri Mar 29 01:27:09 2024
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000002
+                   .org_2       code   0x000004    program   0x00013a
+.config_2007_/HOME/JV/MPLABXPROJECTS/ATIVIDAD       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000000      
+                            0x000004    0x0000a0      
+                            0x002007    0x002007      
+            159 out of 1158 program addresses used, program memory utilization is 13%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  AGUARDA   0x000064    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+            CURVA_DESCIDA   0x00000a    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+             CURVA_SUBIDA   0x00000f    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                 ENQUANTO   0x00003a    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+        ESPERAR_MEDIDA_T0   0x000018    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+        ESPERAR_MEDIDA_T1   0x000023    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+             FIM_ENQUANTO   0x00004e    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+             GRAVA_EEPROM   0x000058    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                   INICIO   0x000069    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                LE_EEPROM   0x000051    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                     MAIN   0x00007d    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+               MEDINDO_RC   0x000080    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                 MEDIR_RC   0x000016    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                 MEDIR_T0   0x000017    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                 MEDIR_T1   0x000022    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+         NAO_HOUVE_BORROW   0x000034    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+     NAO_HOUVE_BORROW_DIV   0x000043    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                  SAI_INT   0x000011    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                SEM_CARRY   0x00008f    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+            SEM_CARRY_DIV   0x00004c    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                    SOMAR   0x00008a    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+            CURVA_DESCIDA   0x00000a    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+             CURVA_SUBIDA   0x00000f    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                  SAI_INT   0x000011    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                 MEDIR_RC   0x000016    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                 MEDIR_T0   0x000017    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+        ESPERAR_MEDIDA_T0   0x000018    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                 MEDIR_T1   0x000022    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+        ESPERAR_MEDIDA_T1   0x000023    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+         NAO_HOUVE_BORROW   0x000034    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                 ENQUANTO   0x00003a    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+     NAO_HOUVE_BORROW_DIV   0x000043    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+            SEM_CARRY_DIV   0x00004c    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+             FIM_ENQUANTO   0x00004e    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                LE_EEPROM   0x000051    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+             GRAVA_EEPROM   0x000058    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                  AGUARDA   0x000064    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                   INICIO   0x000069    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                     MAIN   0x00007d    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+               MEDINDO_RC   0x000080    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                    SOMAR   0x00008a    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+                SEM_CARRY   0x00008f    program     static /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM
+
+

@@ -1,0 +1,50 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Sun Jan 14 23:52:34 2024
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000002
+                   .org_2       code   0x000004    program   0x000090
+.config_2007_/HOME/JV/MPLABXPROJECTS/ATIVIDAD       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000000      
+                            0x000004    0x00004b      
+                            0x002007    0x002007      
+            74 out of 1158 program addresses used, program memory utilization is 6%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+      ATUALIZAR_DIVIDENDO   0x00001a    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+         CONTAR_DIVISORES   0x00000c    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+                 ENQUANTO   0x000010    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+             FIM_ENQUANTO   0x000018    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+   FOR_MULTIPLICAR_POR_10   0x00001e    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+                   INICIO   0x000023    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+                     MAIN   0x00002e    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+                  SAI_INT   0x000007    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  SAI_INT   0x000007    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+         CONTAR_DIVISORES   0x00000c    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+                 ENQUANTO   0x000010    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+             FIM_ENQUANTO   0x000018    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+      ATUALIZAR_DIVIDENDO   0x00001a    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+   FOR_MULTIPLICAR_POR_10   0x00001e    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+                   INICIO   0x000023    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+                     MAIN   0x00002e    program     static /home/jv/MPLABXProjects/Atividade_2.X/atv2.ASM
+
+

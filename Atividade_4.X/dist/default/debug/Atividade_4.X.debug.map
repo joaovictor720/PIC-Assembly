@@ -1,0 +1,64 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Mon Mar  4 23:56:31 2024
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000002
+                   .org_2       code   0x000004    program   0x0000dc
+.config_2007_/HOME/JV/MPLABXPROJECTS/ATIVIDAD       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000000      
+                            0x000004    0x000071      
+                            0x002007    0x002007      
+            112 out of 1158 program addresses used, program memory utilization is 9%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  ATRASAR   0x000044    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+               CONFIG_ACK   0x000050    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+              CONFIG_TMR0   0x00005a    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+             DECONFIG_ACK   0x000054    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+            DECONFIG_TMR0   0x00005f    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+       ENDERECO_DIFERENTE   0x000033    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+         ESPERAR_SCL_FALL   0x00004d    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+         ESPERAR_SCL_RISE   0x00004a    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+                 FIM_TMR0   0x00003a    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+                   INICIO   0x000063    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+                  LER_BIT   0x000014    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+              LOOP_ATRASO   0x000046    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+                     MAIN   0x000071    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+                  SAI_INT   0x00003f    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+                START_BIT   0x000010    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                START_BIT   0x000010    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+                  LER_BIT   0x000014    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+       ENDERECO_DIFERENTE   0x000033    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+                 FIM_TMR0   0x00003a    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+                  SAI_INT   0x00003f    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+                  ATRASAR   0x000044    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+              LOOP_ATRASO   0x000046    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+         ESPERAR_SCL_RISE   0x00004a    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+         ESPERAR_SCL_FALL   0x00004d    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+               CONFIG_ACK   0x000050    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+             DECONFIG_ACK   0x000054    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+              CONFIG_TMR0   0x00005a    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+            DECONFIG_TMR0   0x00005f    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+                   INICIO   0x000063    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+                     MAIN   0x000071    program     static /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM
+
+

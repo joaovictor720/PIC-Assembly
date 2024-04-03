@@ -1,0 +1,48 @@
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 122 : Found label after column 1. (CURVA_DESCIDA)
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 123 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 126 : Using default destination of 1 (file).
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 129 : Found label after column 1. (CURVA_SUBIDA)
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 156 : Found label after column 1. (MEDIR_T0)
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 158 : Found label after column 1. (ESPERAR_MEDIDA_T0)
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 169 : Found label after column 1. (MEDIR_T1)
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 171 : Found label after column 1. (ESPERAR_MEDIDA_T1)
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 190 : Using default destination of 1 (file).
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 191 : Found label after column 1. (NAO_HOUVE_BORROW)
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 203 : Found label after column 1. (ENQUANTO)
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 214 : Using default destination of 1 (file).
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 215 : Found label after column 1. (NAO_HOUVE_BORROW_DIV)
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 223 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 226 : Using default destination of 1 (file).
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 227 : Found label after column 1. (SEM_CARRY_DIV)
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 228 : Using default destination of 1 (file).
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 230 : Found label after column 1. (FIM_ENQUANTO)
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 242 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 243 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 244 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 253 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 255 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 256 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 259 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 261 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 262 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 264 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 277 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 279 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 281 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 285 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 313 : Found label after column 1. (MEDINDO_RC)
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 326 : Found label after column 1. (SOMAR)
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 328 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 331 : Using default destination of 1 (file).
+Warning[207] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 332 : Found label after column 1. (SEM_CARRY)
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 333 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 334 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 341 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 342 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 343 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 344 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 345 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 346 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 347 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 348 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_7.X/atv7.ASM 349 : Using default destination of 1 (file).

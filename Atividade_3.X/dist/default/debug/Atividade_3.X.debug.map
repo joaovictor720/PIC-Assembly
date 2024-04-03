@@ -1,0 +1,50 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Wed Feb 14 15:30:47 2024
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000002
+                   .org_2       code   0x000004    program   0x000092
+.config_2007_/HOME/JV/MPLABXPROJECTS/ATIVIDAD       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000000      
+                            0x000004    0x00004c      
+                            0x002007    0x002007      
+            75 out of 1158 program addresses used, program memory utilization is 6%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+        AMARELOS_ATIVADOS   0x00001d    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+     AMARELOS_DESATIVADOS   0x00000b    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+             ATIVAR_AMAR2   0x00001b    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+           ATIVAR_AMARELO   0x000012    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+                   INICIO   0x00003b    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+                     MAIN   0x00004c    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+                  SAI_INT   0x000034    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+    TROCAR_VERDE_VERMELHO   0x000024    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+     AMARELOS_DESATIVADOS   0x00000b    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+           ATIVAR_AMARELO   0x000012    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+             ATIVAR_AMAR2   0x00001b    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+        AMARELOS_ATIVADOS   0x00001d    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+    TROCAR_VERDE_VERMELHO   0x000024    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+                  SAI_INT   0x000034    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+                   INICIO   0x00003b    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+                     MAIN   0x00004c    program     static /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM
+
+

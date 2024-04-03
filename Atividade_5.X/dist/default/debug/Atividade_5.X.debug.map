@@ -1,0 +1,46 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Sat Mar 16 05:42:43 2024
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                   .org_1       code   0x000004    program   0x0000d0
+.config_2007_BUILD/DEFAULT/DEBUG/ATV5.O       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000004    0x00006b      
+                            0x002007    0x002007      
+            108 out of 1158 program addresses used, program memory utilization is 9%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+        ATIVAR_DUTY_CYCLE   0x000017    program     static /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM
+           FIM_DUTY_CYCLE   0x00004e    program     static /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM
+                   INICIO   0x000055    program     static /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM
+     INTERVALO_NAO_MINIMO   0x000023    program     static /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM
+                     MAIN   0x00006b    program     static /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM
+                  SAI_INT   0x000050    program     static /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+        ATIVAR_DUTY_CYCLE   0x000017    program     static /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM
+     INTERVALO_NAO_MINIMO   0x000023    program     static /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM
+           FIM_DUTY_CYCLE   0x00004e    program     static /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM
+                  SAI_INT   0x000050    program     static /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM
+                   INICIO   0x000055    program     static /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM
+                     MAIN   0x00006b    program     static /home/jv/MPLABXProjects/Atividade_5.X/atv5.ASM
+
+

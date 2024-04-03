@@ -1,0 +1,17 @@
+Warning[207] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 118 : Found label after column 1. (LER_BIT)
+Message[305] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 127 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 132 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 149 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 153 : Using default destination of 1 (file).
+Message[302] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 168 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[207] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 175 : Found label after column 1. (ENDERECO_DIFERENTE)
+Warning[207] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 217 : Found label after column 1. (LOOP_ATRASO)
+Message[305] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 218 : Using default destination of 1 (file).
+Message[302] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 235 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 242 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 243 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 271 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 272 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 274 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 276 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_4.X/atv4.ASM 282 : Register in operand not in bank 0.  Ensure that bank bits are correct.

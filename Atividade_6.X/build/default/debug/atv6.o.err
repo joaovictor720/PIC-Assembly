@@ -1,0 +1,37 @@
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 135 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 136 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 137 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 146 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 148 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 149 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 152 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 154 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 155 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 157 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 170 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 172 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 174 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[207] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 201 : Found label after column 1. (MEDIR)
+Warning[207] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 203 : Found label after column 1. (ESPERAR_MEDIDA)
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 208 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 209 : Using default destination of 1 (file).
+Warning[207] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 217 : Found label after column 1. (SOMAR)
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 219 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 222 : Using default destination of 1 (file).
+Warning[207] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 223 : Found label after column 1. (SEM_CARRY)
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 224 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 225 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 232 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 233 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 234 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 235 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 236 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 237 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 238 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 239 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 240 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 257 : Using default destination of 1 (file).
+Warning[207] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 258 : Found label after column 1. (GRAVAR_ARRAY)
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 263 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 264 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_6.X/atv6.ASM 265 : Using default destination of 1 (file).

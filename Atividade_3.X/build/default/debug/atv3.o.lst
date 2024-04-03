@@ -1,0 +1,558 @@
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   2-14-2024  12:30:47         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00002 ;*              MODIFICAÇÕES PARA USO COM 12F675                   *
+                      00003 ;*                FEITAS PELO PROF. MARDSON                        *
+                      00004 ;*                      DEZEMBRO DE 2023                           *
+                      00005 ;*                 BASEADO NO EXEMPLO DO LIVRO                     *
+                      00006 ;*           Desbravando o PIC. David José de Souza                *
+                      00007 ;*-----------------------------------------------------------------*
+                      00008 ;*   MODELO PARA O PIC 12F675                                      *
+                      00009 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00010 
+                      00011 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00012 ;*                     ARQUIVOS DE DEFINIÇÕES                      *
+                      00013 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00014 #INCLUDE <p12f675.inc>  ;ARQUIVO PADRÃO MICROCHIP PARA 12F675
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Nov 22 2017
+                      00005 ;  MPASM PIC12F675 processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2017 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00367         LIST
+                      00015 
+2007   3FA4           00016         __CONFIG _BODEN_OFF & _CP_OFF & _PWRTE_ON & _WDT_OFF & _MCLRE_ON & _INTRC_OSC_NOCLKOUT
+                      00017 
+                      00018 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00019 ;*                    PAGINAÇÃO DE MEMÓRIA                         *
+                      00020 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00021 ;DEFINIÇÃO DE COMANDOS DE USUÁRIO PARA ALTERAÇÃO DA PÁGINA DE MEMÓRIA
+                      00022 #DEFINE BANK0   BCF STATUS,RP0  ;SETA BANK 0 DE MEMÓRIA
+                      00023 #DEFINE BANK1   BSF STATUS,RP0  ;SETA BANK 1 DE MEMÓRIA
+                      00024 
+                      00025 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00026 ;*                         VARIÁVEIS                               *
+                      00027 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00028 ; DEFINIÇÃO DOS NOMES E ENDEREÇOS DE TODAS AS VARIÁVEIS UTILIZADAS 
+                      00029 ; PELO SISTEMA
+                      00030 
+                      00031         CBLOCK  0x20    ;ENDEREÇO INICIAL DA MEMÓRIA DE
+                      00032                                         ;USUÁRIO
+  00000020            00033                 W_TEMP          ;REGISTRADORES TEMPORÁRIOS PARA USO
+  00000021            00034                 STATUS_TEMP     ;JUNTO ÀS INTERRUPÇÕES
+                      00035 
+  00000022            00036                 INT_SELECT ; SELECIONA A ROTINA DE INTERRUPÇÃO CORRETA
+  00000023            00037                 CONTADOR ; CONTADOR DE OVERFLOWS DO TMR0
+  00000024            00038                 AUX ; AUXILIAR PARA TROCA DE VAL0RES
+                      00039 
+                      00040         ENDC                    ;FIM DO BLOCO DE DEFINIÇÃO DE VARIÁVEIS
+                      00041 
+                      00042 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00043 ;*                        FLAGS INTERNOS                           *
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   2-14-2024  12:30:47         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00044 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00045 ; DEFINIÇÃO DE TODOS OS FLAGS UTILIZADOS PELO SISTEMA
+                      00046 
+                      00047 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00048 ;*                         CONSTANTES                              *
+                      00049 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00050 ; DEFINIÇÃO DE TODAS AS CONSTANTES UTILIZADAS PELO SISTEMA7
+                      00051 #DEFINE TMR0_25MS .61 ; CONSTANTE DE REINICIALIZAÇÃO DO TMR0 PARA CONTAR 25ms COM PRESCALE 1:128
+                      00052 #DEFINE LIMITE0 .79 ; LIMITE DE CONTAGEM DE OVERFLOWS PARA A INTERRUPÇÃO 0
+                      00053 #DEFINE LIMITE1 .19 ; LIMITE DE CONTAGEM DE OVERFLOWS PARA A INTERRUPÇÃO 1
+                      00054 
+                      00055 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00056 ;*                           ENTRADAS                              *
+                      00057 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00058 ; DEFINIÇÃO DE TODOS OS PINOS QUE SERÃO UTILIZADOS COMO ENTRADA
+                      00059 ; RECOMENDAMOS TAMBÉM COMENTAR O SIGNIFICADO DE SEUS ESTADOS (0 E 1)
+                      00060 
+                      00061 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00062 ;*                           SAÍDAS                                *
+                      00063 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00064 ; DEFINIÇÃO DE TODOS OS PINOS QUE SERÃO UTILIZADOS COMO SAÍDA
+                      00065 ; RECOMENDAMOS TAMBÉM COMENTAR O SIGNIFICADO DE SEUS ESTADOS (0 E 1)
+                      00066 
+                      00067 ; AS PORTAS GP0 E GP1 DEVEM SER USADAS PARA MAIS DE UM LED
+                      00068 #DEFINE VERMELHO1 GP0
+                      00069 #DEFINE VERDE2 GP0
+                      00070 #DEFINE VERMELHO2 GP1
+                      00071 #DEFINE VERDE1 GP1
+                      00072 #DEFINE AMARELO1 GP2
+                      00073 #DEFINE AMARELO2 GP4
+                      00074 
+                      00075 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00076 ;*                       VETOR DE RESET                            *
+                      00077 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00078 
+0000                  00079         ORG     0x00                    ;ENDEREÇO INICIAL DE PROCESSAMENTO
+0000   283B           00080         GOTO    INICIO
+                      00081         
+                      00082 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00083 ;*                    INÍCIO DA INTERRUPÇÃO                        *
+                      00084 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00085 ; ENDEREÇO DE DESVIO DAS INTERRUPÇÕES. A PRIMEIRA TAREFA É SALVAR OS
+                      00086 ; VALORES DE "W" E "STATUS" PARA RECUPERAÇÃO FUTURA
+                      00087 
+0004                  00088         ORG     0x04            ;ENDEREÇO INICIAL DA INTERRUPÇÃO
+0004   00A0           00089         MOVWF   W_TEMP          ;COPIA W PARA W_TEMP
+0005   0E03           00090         SWAPF   STATUS,W
+0006   00A1           00091         MOVWF   STATUS_TEMP     ;COPIA STATUS PARA STATUS_TEMP
+                      00092         
+                      00093         ; INT_SELECT = 0 -> AMARELOS DESATIVADOS
+                      00094         ; INT_SELECT = 1 -> AMARELOS ATIVADOS
+0007   3001           00095         MOVLW   .1
+0008   0222           00096         SUBWF   INT_SELECT, W ; INT_SELECT - 1
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   2-14-2024  12:30:47         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0009   1903           00097         BTFSC   STATUS, Z ; SE Z=0, ENTÃO INT_SELECT=0, OU SEJA, PULAR ESSE GOTO
+000A   281D           00098         GOTO    AMARELOS_ATIVADOS
+                      00099 
+                      00100 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00101 ;*                    ROTINA DE INTERRUPÇÃO                        *
+                      00102 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00103 ; AQUI SERÃO ESCRITAS AS ROTINAS DE RECONHECIMENTO E TRATAMENTO DAS
+                      00104 ; INTERRUPÇÕES
+                      00105         
+                      00106 ; INT_SELECT = 0
+000B                  00107 AMARELOS_DESATIVADOS
+                      00108         ; CONTA 25ms * 80 = 2s
+000B   304F           00109         MOVLW LIMITE0 ; LIMITE DE OVERFLOWS PRO TMR0
+000C   0223           00110         SUBWF CONTADOR, W ; CONTADOR - 80
+000D   1903           00111         BTFSC STATUS, Z ; SE Z=0, CONTADOR != 80, ENTÃO PULAR GOTO (EXECUTAR NORMALMENTE)
+000E   2812           00112         GOTO ATIVAR_AMARELO
+                      00113 
+                      00114         ; CONTAR OVERFLOW
+000F   0AA3           00115         INCF CONTADOR, F ; INCREMENTANDO CONTADOR DE OVERFLOWS
+0010   110B           00116         BCF INTCON, T0IF ; LIMPANDO FLAG DE OVERFLOW DO TMR0
+0011   2834           00117         GOTO SAI_INT ; ENCERRANDO INTERRUPÇÃO
+                      00118         
+Warning[207]: Found label after column 1. (ATIVAR_AMARELO)
+0012                  00119         ATIVAR_AMARELO
+0012   3001           00120             MOVLW .1
+0013   00A2           00121             MOVWF INT_SELECT ; MUDANDO PARA OUTRA INTERRUPÇÃO
+0014   3000           00122             MOVLW .0
+0015   00A3           00123             MOVWF CONTADOR
+0016   110B           00124             BCF INTCON, T0IF
+0017   1805           00125             BTFSC GPIO, GP0 ; SE VERDE2 ACESO, ACENDER AMARELO2
+0018   281B           00126             GOTO ATIVAR_AMAR2
+                      00127             
+                      00128             ;------ COLOCAR BREAKPOINT PARA TESTE AQUI ------
+0019   1505           00129             BSF GPIO, AMARELO1 ; ACENDENDO AMARELO1
+001A   2834           00130             GOTO SAI_INT
+                      00131             
+Warning[207]: Found label after column 1. (ATIVAR_AMAR2)
+001B                  00132             ATIVAR_AMAR2
+                      00133                 ;------ COLOCAR BREAKPOINT PARA TESTE AQUI ------
+001B   1605           00134                 BSF GPIO, AMARELO2 ; ACENDENDO AMARELO2
+001C   2834           00135                 GOTO SAI_INT
+                      00136 
+                      00137 ; INT_SELECT = 1
+001D                  00138 AMARELOS_ATIVADOS
+                      00139         ; CONTA 25ms * 20 = 0.5s
+001D   3013           00140         MOVLW LIMITE1 ; LIMITE DE OVERFLOWS PRO TMR0
+001E   0223           00141         SUBWF CONTADOR, W ; CONTADOR - 20
+001F   1903           00142         BTFSC STATUS, Z ; SE Z=1, CONTADOR=20, ENTÃO TROCAR VERDE E VERMELHO
+0020   2824           00143         GOTO TROCAR_VERDE_VERMELHO
+                      00144         
+                      00145         ; CONTAR OVERFLOW
+0021   0AA3           00146         INCF CONTADOR, F ; INCREMENTANDO CONTADOR DE OVERFLOWS
+0022   110B           00147         BCF INTCON, T0IF ; LIMPANDO FLAG DE OVERFLOW DO TMR0
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   2-14-2024  12:30:47         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0023   2834           00148         GOTO SAI_INT
+                      00149         
+                      00150         ; TROCAR SINAIS ENTRE VERDES E VERMELHOS
+Warning[207]: Found label after column 1. (TROCAR_VERDE_VERMELHO)
+0024                  00151         TROCAR_VERDE_VERMELHO
+                      00152             ;------ COLOCAR BREAKPOINT PARA TESTE AQUI ------
+0024   3000           00153             MOVLW .0
+0025   00A2           00154             MOVWF INT_SELECT ; MUDANDO PARA OUTRA INTERRUPÇÃO
+0026   00A3           00155             MOVWF CONTADOR ; ZERANDO CONTADOR
+0027   110B           00156             BCF INTCON, T0IF ; LIMPANDO FLAG DE OVERFLOW
+                      00157 
+                      00158             ; APAGANDO AMARELOS
+0028   1105           00159             BCF GPIO, GP2
+0029   1205           00160             BCF GPIO, GP4
+                      00161 
+                      00162             ; TROCANDO OS SINAIS DE GP0 (VERMELHO1 E VERDE2) E GP1 (VERMELHO2 E VERDE1)
+002A   0805           00163             MOVFW GPIO
+002B   3901           00164             ANDLW B'00000001' ; OBTENDO GP0 (VERDE2)
+002C   00A4           00165             MOVWF AUX ; AUX <- VERDE2
+002D   1003           00166             BCF STATUS, C ; LIMPANDO FLAG DO CARRY PRA NÃO ALTERAR AS ROTAÇÕES A SEGUIR
+Message[305]: Using default destination of 1 (file).
+002E   0DA4           00167             RLF AUX ; INVERTENDO AS POSIÇÕES DOS BITS DE GP0 E GP1
+002F   0C05           00168             RRF GPIO, W ; INVERTENDO AS POSIÇÕES DOS BITS DE GP0 E GP1
+0030   3901           00169             ANDLW B'00000001' ; OBTENDO GP1 (VERMELHO2)
+0031   0085           00170             MOVWF GPIO ; VERDE2 (GP0) <- VERMELHO2 (GP1)
+0032   0824           00171             MOVFW AUX
+Message[305]: Using default destination of 1 (file).
+0033   0485           00172             IORWF GPIO ; VERMELHO2 (GP1) <- AUX
+                      00173 
+                      00174 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00175 ;*                 ROTINA DE SAÍDA DA INTERRUPÇÃO                  *
+                      00176 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00177 ; OS VALORES DE "W" E "STATUS" DEVEM SER RECUPERADOS ANTES DE 
+                      00178 ; RETORNAR DA INTERRUPÇÃO
+                      00179 
+0034                  00180 SAI_INT
+0034   0E21           00181         SWAPF   STATUS_TEMP,W
+0035   0083           00182         MOVWF   STATUS          ;MOVE STATUS_TEMP PARA STATUS
+0036   0EA0           00183         SWAPF   W_TEMP,F
+0037   0E20           00184         SWAPF   W_TEMP,W        ;MOVE W_TEMP PARA W
+0038   303D           00185         MOVLW   TMR0_25MS
+0039   0081           00186         MOVWF   TMR0            ; REINICIANDO TMR0 PARA CONTAR 25ms
+003A   0009           00187         RETFIE
+                      00188 
+                      00189 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00190 ;*                       ROTINAS E SUBROTINAS                      *
+                      00191 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00192 ; CADA ROTINA OU SUBROTINA DEVE POSSUIR A DESCRIÇÃO DE FUNCIONAMENTO
+                      00193 ; E UM NOME COERENTE ÀS SUAS FUNÇÕES.
+                      00194         
+                      00195 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00196 ;*                     INICIO DO PROGRAMA                          *
+                      00197 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   2-14-2024  12:30:47         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00198         
+003B                  00199 INICIO
+003B   1683           00200         BANK1                           ;ALTERA PARA O BANCO 1
+                      00201         
+                      00202         ; VERMELHO1 <- VERDE2 <- GP0
+                      00203         ; VERMLEHO2 <- VERDE1 <- GP1
+                      00204         ; AMARELO1 <- GP2
+                      00205         ; AMARELO2 <- GP4
+003C   3000           00206         MOVLW   B'00000000' ;CONFIGURA TODAS AS PORTAS DO GPIO (PINOS)
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+003D   0085           00207         MOVWF   TRISIO          ;COMO SAÍDAS
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+003E   019F           00208         CLRF    ANSEL           ;DEFINE PORTAS COMO Digital I/O
+003F   3006           00209         MOVLW   B'00000110'     ;PRESCALER 1:128
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0040   0081           00210         MOVWF   OPTION_REG      ;DEFINE OPÇÕES DE OPERAÇÃO
+0041   30A0           00211         MOVLW   B'10100000'     ;ATIVANDO INTERRUPÇÕES PELO TMR0
+0042   008B           00212         MOVWF   INTCON          ;DEFINE OPÇÕES DE INTERRUPÇÕES
+0043   1283           00213         BANK0                           ;RETORNA PARA O BANCO
+0044   3007           00214         MOVLW   B'00000111'
+0045   0099           00215         MOVWF   CMCON           ;DEFINE O MODO DE OPERAÇÃO DO COMPARADOR ANALÓGICO
+                      00216 
+                      00217 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00218 ;*                     INICIALIZAÇÃO DAS VARIÁVEIS                 *
+                      00219 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+0046   303D           00220         MOVLW TMR0_25MS
+0047   0081           00221         MOVWF TMR0 ; SETANDO O TMR0 PARA CONTAR 25ms
+                      00222         
+0048   3000           00223         MOVLW .0
+0049   00A2           00224         MOVWF INT_SELECT ; SELECIONANDO INTERRUPÇÃO DE AMARELO
+                      00225         
+004A   00A3           00226         MOVWF CONTADOR ; ZERANDO O CONTADOR
+004B   1405           00227         BSF GPIO, GP0 ; INICIANDO COM VERMELHO1 E VERDE2 ATIVADOS
+                      00228 
+                      00229 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00230 ;*                     ROTINA PRINCIPAL                            *
+                      00231 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+004C                  00232 MAIN
+                      00233 
+                      00234         ; TODAS AS ATIVAÇÕES DE LED SÃO FEITAS POR INTERRUPÇÃO,
+                      00235         ; PERMITINDO A EXECUÇÃO DE OUTRAS TAREFAS NO MICROCONTROLADOR
+                      00236         
+004C   284C           00237         GOTO    MAIN
+                      00238 
+                      00239 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00240 ;*                       FIM DO PROGRAMA                           *
+                      00241 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                      00242 
+                      00243         END
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   2-14-2024  12:30:47         PAGE  6
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ADCON0                            0000001F
+ADCS0                             00000004
+ADCS1                             00000005
+ADCS2                             00000006
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+AMARELO1                          GP2
+AMARELO2                          GP4
+AMARELOS_ATIVADOS                 0000001D
+AMARELOS_DESATIVADOS              0000000B
+ANS0                              00000000
+ANS1                              00000001
+ANS2                              00000002
+ANS3                              00000003
+ANSEL                             0000009F
+ATIVAR_AMAR2                      0000001B
+ATIVAR_AMARELO                    00000012
+AUX                               00000024
+BANK0                             BCF STATUS,RP0
+BANK1                             BSF STATUS,RP0
+C                                 00000000
+CAL0                              00000002
+CAL1                              00000003
+CAL2                              00000004
+CAL3                              00000005
+CAL4                              00000006
+CAL5                              00000007
+CHS0                              00000002
+CHS1                              00000003
+CINV                              00000004
+CIS                               00000003
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             00000019
+CMIE                              00000003
+CMIF                              00000003
+CONTADOR                          00000023
+COUT                              00000006
+DC                                00000001
+EEADR                             0000009B
+EECON1                            0000009C
+EECON2                            0000009D
+EEDAT                             0000009A
+EEDATA                            0000009A
+EEIE                              00000007
+EEIF                              00000007
+F                                 00000001
+FSR                               00000004
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   2-14-2024  12:30:47         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+GIE                               00000007
+GO                                00000001
+GO_DONE                           00000001
+GO_NOT_DONE                       00000001
+GP0                               00000000
+GP1                               00000001
+GP2                               00000002
+GP3                               00000003
+GP4                               00000004
+GP5                               00000005
+GPIE                              00000003
+GPIF                              00000000
+GPIO                              00000005
+GPIO0                             00000000
+GPIO1                             00000001
+GPIO2                             00000002
+GPIO3                             00000003
+GPIO4                             00000004
+GPIO5                             00000005
+INDF                              00000000
+INICIO                            0000003B
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+INT_SELECT                        00000022
+IOC                               00000096
+IOC0                              00000000
+IOC1                              00000001
+IOC2                              00000002
+IOC3                              00000003
+IOC4                              00000004
+IOC5                              00000005
+IOCB                              00000096
+IOCB0                             00000000
+IOCB1                             00000001
+IOCB2                             00000002
+IOCB3                             00000003
+IOCB4                             00000004
+IOCB5                             00000005
+IRP                               00000007
+LIMITE0                           .79
+LIMITE1                           .19
+MAIN                              0000004C
+NOT_BOD                           00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000001
+NOT_GPPU                          00000007
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+OPTION_REG                        00000081
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   2-14-2024  12:30:47         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+OSCCAL                            00000090
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PIE1                              0000008C
+PIR1                              0000000C
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+SAI_INT                           00000034
+STATUS                            00000003
+STATUS_TEMP                       00000021
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1IE                              00000000
+T1IF                              00000000
+T1OSCEN                           00000003
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR0_25MS                         .61
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1GE                            00000006
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TRISIO                            00000085
+TRISIO0                           00000000
+TRISIO1                           00000001
+TRISIO2                           00000002
+TRISIO3                           00000003
+TRISIO4                           00000004
+TRISIO5                           00000005
+TROCAR_VERDE_VERMELHO             00000024
+VCFG                              00000006
+VERDE1                            GP1
+VERDE2                            GP0
+VERMELHO1                         GP0
+VERMELHO2                         GP1
+VR0                               00000000
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   2-14-2024  12:30:47         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+VR1                               00000001
+VR2                               00000002
+VR3                               00000003
+VRCON                             00000099
+VREN                              00000007
+VRR                               00000005
+W                                 00000000
+WPU                               00000095
+WPU0                              00000000
+WPU1                              00000001
+WPU2                              00000002
+WPU4                              00000004
+WPU5                              00000005
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+W_TEMP                            00000020
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_OFF                           00003FFF
+_CP_ON                            00003F7F
+_DEVID1                           00002006
+_EC_OSC                           00003FFB
+_EXTRC_OSC_CLKOUT                 00003FFF
+_EXTRC_OSC_NOCLKOUT               00003FFE
+_FOSC_EC                          00003FFB
+_FOSC_EXTRCCLK                    00003FFF
+_FOSC_EXTRCIO                     00003FFE
+_FOSC_HS                          00003FFA
+_FOSC_INTRCCLK                    00003FFD
+_FOSC_INTRCIO                     00003FFC
+_FOSC_LP                          00003FF8
+_FOSC_XT                          00003FF9
+_HS_OSC                           00003FFA
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_INTRC_OSC_CLKOUT                 00003FFD
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LP_OSC                           00003FF8
+_MCLRE_OFF                        00003FDF
+_MCLRE_ON                         00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FEF
+_WDTE_OFF                         00003FF7
+_WDTE_ON                          00003FFF
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   2-14-2024  12:30:47         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_WDT_OFF                          00003FF7
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FF9
+__12F675                          00000001
+__DEBUG                           
+__MPLAB_DEBUGGER_SIMULATOR        1
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : X---XXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXX--- ---------------- ---------------- ----------------
+2000 : -------X-------- ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:    74
+Program Memory Words Free:   950
+
+
+Errors   :     0
+Warnings :     3 reported,     0 suppressed
+Messages :     5 reported,     0 suppressed
+
+

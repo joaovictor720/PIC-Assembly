@@ -1,0 +1,8 @@
+Warning[207] /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM 119 : Found label after column 1. (ATIVAR_AMARELO)
+Warning[207] /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM 132 : Found label after column 1. (ATIVAR_AMAR2)
+Warning[207] /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM 151 : Found label after column 1. (TROCAR_VERDE_VERMELHO)
+Message[305] /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM 167 : Using default destination of 1 (file).
+Message[305] /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM 172 : Using default destination of 1 (file).
+Message[302] /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM 207 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM 208 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/jv/MPLABXProjects/Atividade_3.X/atv3.ASM 210 : Register in operand not in bank 0.  Ensure that bank bits are correct.
