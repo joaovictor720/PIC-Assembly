@@ -1,11 +1,20 @@
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*              MODIFICAÇÕES PARA USO COM 12F675                   *
 ;*                FEITAS PELO PROF. MARDSON                        *
-;*                      OUTUBRO DE 2022                            *
-;*                 BASEADO NO EXEMPLO DO LIVRO                     *
-;*           Desbravando o PIC. David José de Souza                *
+;*                     MARÇO DE 2024                               *
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+;*                       NOME DO PROJETO                           *
+;*                           CLIENTE                               *
+;*         DESENVOLVIDO PELA MOSAICO ENGENHARIA E CONSULTORIA      *
+;*   VERSÃO: 1.0                           DATA: 17/06/03          *
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+;*                     DESCRIÇÃO DO ARQUIVO                        *
 ;*-----------------------------------------------------------------*
 ;*   MODELO PARA O PIC 12F675                                      *
+;*                                                                 *
+;*                                                                 *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -13,8 +22,7 @@
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 #INCLUDE <p12f675.inc>	;ARQUIVO PADRÃO MICROCHIP PARA 12F675
 
-	; WDT LIGADO, POWER-UP TIMER DESLIGADO, OSCILADOR LP (LOW POWER) ESCOLHIDO
-	__CONFIG _BODEN_OFF & _CP_OFF & _PWRTE_OFF & _WDT_ON & _MCLRE_ON & _INTRC_OSC_NOCLKOUT
+	__CONFIG _BODEN_OFF & _CP_OFF & _PWRTE_ON & _WDT_OFF & _MCLRE_ON & _INTRC_OSC_NOCLKOUT
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                    PAGINAÇÃO DE MEMÓRIA                         *
@@ -29,13 +37,15 @@
 ; DEFINIÇÃO DOS NOMES E ENDEREÇOS DE TODAS AS VARIÁVEIS UTILIZADAS 
 ; PELO SISTEMA
 
-	CBLOCK	0x20	;ENDEREÇO INICIAL DA MEMÓRIA DE USUÁRIO
-	
+	CBLOCK	0x20	;ENDEREÇO INICIAL DA MEMÓRIA DE
+					;USUÁRIO
 		W_TEMP		;REGISTRADORES TEMPORÁRIOS PARA USO
 		STATUS_TEMP	;JUNTO ÀS INTERRUPÇÕES
+		DADO		;ARMAZENA O DADO PARA A EEPROM
 
-	ENDC		;FIM DO BLOCO DE DEFINIÇÃO DE VARIÁVEIS
+		;NOVAS VARIÁVEIS
 
+	ENDC			;FIM DO BLOCO DE MEMÓRIA
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                        FLAGS INTERNOS                           *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -45,10 +55,13 @@
 ;*                         CONSTANTES                              *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ; DEFINIÇÃO DE TODAS AS CONSTANTES UTILIZADAS PELO SISTEMA
-	
-	#DEFINE TH_2V .102
-	#DEFINE TH_3V .154
-	#DEFINE TH_4V .204
+; INICIALIZAÇÃO DA EEPROM, DE ACORDO COM A DESCRIÇÃO NO ARQUIVO "Def_Rega_Formigas.inc"
+
+;A PARTIR DO ENDEREÇO ZERO DA EEPROM, DADOS EM ORDEM ALEATÓRIA
+	ORG 0x2100
+	DE	0X89,0X1E,0X39,0X9F,0XC2,0X0C,0XAB,0X33,0X63,0XD3,0X95,0X7B,0X38,0XD6,0X1E,0X48
+	DE	0XDB,0XD8,0X86,0XFD,0XA5,0XFC,0X0C,0XBE,0X68,0X9B,0XD9,0X10,0XD8,0XEC,0X90,0X91
+	DE	0XAA,0XBB,0XCC,0XDD,0XEE,0XF1,0XC9,0X77
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                           ENTRADAS                              *
@@ -61,11 +74,6 @@
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ; DEFINIÇÃO DE TODOS OS PINOS QUE SERÃO UTILIZADOS COMO SAÍDA
 ; RECOMENDAMOS TAMBÉM COMENTAR O SIGNIFICADO DE SEUS ESTADOS (0 E 1)
-	
-	#DEFINE LED1 GP1
-	#DEFINE LED2 GP2
-	#DEFINE LED3 GP4
-	#DEFINE LED4 GP5
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                       VETOR DE RESET                            *
@@ -109,122 +117,81 @@ SAI_INT
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ; CADA ROTINA OU SUBROTINA DEVE POSSUIR A DESCRIÇÃO DE FUNCIONAMENTO
 ; E UM NOME COERENTE ÀS SUAS FUNÇÕES.
+LE_EEPROM
+;LER DADO DA EEPROM, CUJO ENDEREÇO É INDICADO EM W
+;O DADO LIDO RETORNA EM W
+	ANDLW	.127		;LIMITA ENDEREÇO MAX. 127
+	BANK1				;ACESSO VIA BANK 1
+	MOVWF	EEADR		;INDICA O END. DE LEITURA
+	BSF		EECON1,RD	;INICIA O PROCESSO DE LEITURA
+	MOVF	EEDATA,W	;COLOCA DADO LIDO EM W
+	BANK0				;POSICIONA PARA BANK 0
+	RETURN
+
+GRAVA_EEPROM
+;ESCREVE UM DADO NA EEPROM, CUJO ENDEREÇO É INDICADO EM W
+;O DADO A SER ESCRITO DEVE ESTAR ARMAZENADO NA VARIÁVEL DADO
+	ANDLW	.127		;LIMITA ENDEREÇO MAX. 127
+	BANK1				;ACESSO VIA BANK 1
+	MOVWF	EEADR
+	MOVF	DADO,W
+	MOVWF	EEDATA
+	BSF		EECON1,WREN ;HABILITA ESCRITA
+	BCF		INTCON,GIE	;DESLIGA INTERRUPÇÕES
+	MOVLW	B'01010101'	;DESBLOQUEIA ESCRITA
+	MOVWF	EECON2		;
+	MOVLW	B'10101010'	;DESBLOQUEIA ESCRITA
+	MOVWF	EECON2		;
+	BSF		EECON1,WR ;INICIA A ESCRITA
+AGUARDA
+	BTFSC	EECON1,WR ;TERMINOU?
+	GOTO	AGUARDA
+	BSF		INTCON,GIE ;HABILITA INTERRUPÇÕES
+	BANK0				;POSICIONA PARA BANK 0
+	RETURN
+
+SUBROTINA1
+
+	;CORPO DA ROTINA
+
+	RETURN
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                     INICIO DO PROGRAMA                          *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
 INICIO
-	; ******** CONFIGURAÇÃO ********
-	CLRF GPIO
-	BANK1			;ALTERA PARA O BANCO 1
-	MOVLW	B'11111111'
-	MOVWF	TRISIO		;TODOS OS PINOS INICIAM COM ALTA IMPEDÂNCIA
-	MOVLW	B'00010001'
-	MOVWF	ANSEL 		;FREQUÊNCIA DE AMOSTRAGEM DO A/D = FOSC/8, GP0 ANALÓGICA
-	MOVLW	B'00001111'
-	MOVWF	OPTION_REG	;ATRIBUINDO PRESCALER MÁXIMO AO WDT, PULL-UPS HABILITADOS
+	BANK1				;ALTERA PARA O BANCO 1
+	MOVLW	B'00000000' ;CONFIGURA TODAS AS PORTAS DO GPIO (PINOS)
+	MOVWF	TRISIO		;COMO SAÍDAS
+	CLRF	ANSEL 		;DEFINE PORTAS COMO Digital I/O
+	MOVLW	B'00000100'
+	MOVWF	OPTION_REG	;DEFINE OPÇÕES DE OPERAÇÃO
 	MOVLW	B'00000000'
 	MOVWF	INTCON		;DEFINE OPÇÕES DE INTERRUPÇÕES
-	BCF	VRCON, VREN	;DESLIGANDO O CVREF
-	BANK0			;RETORNA PARA O BANCO
+	BANK0				;RETORNA PARA O BANCO
 	MOVLW	B'00000111'
-	MOVWF	CMCON		;DESLIGANDO O COMPARADOR
-	CLRF	ADCON0		;LEFT JUSTIFED, AN0, DESLIGADO POR ENQUANTO
-	MOVLW	B'01000110'
-	MOVWF	T1CON		;DEIXANDO O TMR1 BEM DESLIGADO
+	MOVWF	CMCON		;DEFINE O MODO DE OPERAÇÃO DO COMPARADOR ANALÓGICO
 
-	; ******** LÓGICA PRINCIPAL ********
-	BSF ADCON0, ADON ; LIGANDO CONVERSOR A/D
-	BSF ADCON0, GO
-	ESPERAR_MEDIDA
-	    BTFSC ADCON0, GO
-	    GOTO ESPERAR_MEDIDA
-	BCF ADCON0, ADON ; DESLIGANDO O CONVERSOR A/D
-	
-	; TESTANDO LIMITES DE TENSÃO E LIGANDO OS LEDS CORRESPONDENTES
-	BANK1
-	BCF TRISIO, LED1 ; TIRANDO O LED1 DE ALTA IMPEDÂNCIA
-	BANK0
-	BSF GPIO, LED1
-	MOVLW TH_2V
-	SUBWF ADRESH, W
-	BTFSS STATUS, C
-	GOTO ADORMECER
-	
-	BANK1
-	BSF TRISIO, LED1 ; RECOLOCANDO O LED1 EM ALTA IMPEDÂNCIA
-	BCF TRISIO, LED2 ; TIRANDO O LED2 DE ALTA IMPEDÂNCIA
-	BANK0
-	BSF GPIO, LED2
-	MOVLW TH_3V
-	SUBWF ADRESH, W
-	BTFSS STATUS, C
-	GOTO ADORMECER
-	
-	BANK1
-	BSF TRISIO, LED2 ; RECOLOCANDO O LED2 EM ALTA IMPEDÂNCIA
-	BCF TRISIO, LED3 ; TIRANDO O LED2 DE ALTA IMPEDÂNCIA
-	BANK0
-	BSF GPIO, LED3
-	MOVLW TH_4V
-	SUBWF ADRESH, W
-	BTFSS STATUS, C
-	GOTO ADORMECER
-	
-	BANK1
-	BSF TRISIO, LED3 ; RECOLOCANDO O LED3 EM ALTA IMPEDÂNCIA
-	BCF TRISIO, LED4 ; TIRANDO O LED2 DE ALTA IMPEDÂNCIA
-	BANK0
-	BSF GPIO, LED4
-	
-	; DO MANUAL DO PIC:
-	; "For lowest current consumption in this mode, all I/O
-	; pins should be either at VDD, or VSS, with no external
-	; circuitry drawing current from the I/O pin and the com-
-	; parators and CVREF should be disabled. I/O pins that
-	; are high-impedance inputs should be pulled high or low
-	; externally to avoid switching currents caused by float-
-	; ing inputs. The T0CKI input should also be at VDD or
-	; VSS for lowest current consumption. The contribution
-	; from on-chip pull-ups on GPIO should be considered."
-	ADORMECER
-	BANK1
-	MOVLW 0XFF
-	MOVWF WPU
-	BANK0
-	CLRWDT
-	SLEEP
-	
-	; ******** MODO POWER-UP ********
-	; TODO O GASTO DA REGIÃO DE POWER-UP É DESPREZÍVEL, POIS 
-	; 1 microssegundo = 2,77778e-10 hora
-	; O MAIOR RALO DE POTÊNCIA SÃO OS LEDS, QUE FICAM ACESOS TEMPORARIAMENTE
-	; ENQUANTO O PIC IDENTIFICA O NÍVEL DE TENSÃO CORRETO, O QUE TOTALIZA
-	; 38us = 1.0555564e-8 hora DE PELO MENOS UM LED ACESO NO PIOR CASO DESSE CÓDIGO.
-	; CONSIDERANDO A CORRENTE MÁXIMA DE UMA PORTA DE SAÍDA DO PIC12F675 (25mA), A
-	; POTÊNCIA DISSIPADA NESSE PIOR CASO (LED4 ACESO) É 5V*25mA = 0.125W, OU SEJA,
-	; 1.0555564e-8 hora * 0.125W = 1.3194455e-9 Wh = 1.3194455e-3 uWh. PORTANTO,
-	; SE ATÉ OS LEDS SÃO DESPREZÍVEIS NO PIOR CASO, ENTÃO O MODO POWER-UP TEM
-	; GASTO DESPREZÍVEL
-	
-	; ******* MODO POWER-DOWN *******
-	; NOVAMENTE, CONSIDERANDO O PIOR CASO DOS LEDS, TEMOS QUE A POTÊNCIA É
-	; P_LED = 125mW. A POTÊNCIA NO PIOR CASO DO WDT É:
-	; P_WDT = 17uA * 5V = 85uW
-	; É DITO QUE O PIC12F675 TEM UMA CORRENTE DE BASE DE 995nA NO MÁXIMO,
-	; ENTÃO TEMOS:
-	; P_PIC_PD = 995nA * 5V = 4.975uW
-	; COMO APENAS UM LED FICA ACESO NO POWER-DOWN, E TODO O RESTO
-	; ALÉM DO WDT FICAM DESLIGADOS, TEMOS:
-	; E_total = E_LED_PD + E_WDT_PD = 125mW*sleep + 85uW*sleep
-	; E_total = 0.27517874439 J = 76.438540108333 uWh,
-	; ONDE sleep = 2.199934s, MEDIDO PELO MPLAB-X
-	
-	; ******* CUSTO ENERGÉTICO ESTIMADO DESTA APLICAÇÃO ********
-	; E_total ~ 76.441 uWh (DANDO 0.002uWh DE DESCONFIANÇA PARA O MODO POWER-UP)
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+;*                     INICIALIZAÇÃO DAS VARIÁVEIS                 *
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	GOTO	INICIO
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+;*                     ROTINA PRINCIPAL                            *
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+MAIN
+
+	;CORPO DA ROTINA PRINCIPAL
+	MOVLW	.29
+	MOVWF	DADO
+	MOVLW	.8
+	CALL	GRAVA_EEPROM
+	CLRF	DADO
+	MOVLW	.8
+	CALL	LE_EEPROM
+FIM
+	GOTO FIM
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                       FIM DO PROGRAMA                           *
