@@ -44,6 +44,7 @@
 		DADO		;ARMAZENA O DADO PARA A EEPROM
 
 		;NOVAS VARIÁVEIS
+		CONT_WDT
 
 	ENDC			;FIM DO BLOCO DE MEMÓRIA
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -55,19 +56,17 @@
 ;*                         CONSTANTES                              *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ; DEFINIÇÃO DE TODAS AS CONSTANTES UTILIZADAS PELO SISTEMA
-; INICIALIZAÇÃO DA EEPROM, DE ACORDO COM A DESCRIÇÃO NO ARQUIVO "Def_Rega_Formigas.inc"
-
-;A PARTIR DO ENDEREÇO ZERO DA EEPROM, DADOS EM ORDEM ALEATÓRIA
-	ORG 0x2100
-	DE	0X89,0X1E,0X39,0X9F,0XC2,0X0C,0XAB,0X33,0X63,0XD3,0X95,0X7B,0X38,0XD6,0X1E,0X48
-	DE	0XDB,0XD8,0X86,0XFD,0XA5,0XFC,0X0C,0XBE,0X68,0X9B,0XD9,0X10,0XD8,0XEC,0X90,0X91
-	DE	0XAA,0XBB,0XCC,0XDD,0XEE,0XF1,0XC9,0X77
+	#DEFINE CONT_EEPROM_PTR 0X1F
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                           ENTRADAS                              *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ; DEFINIÇÃO DE TODOS OS PINOS QUE SERÃO UTILIZADOS COMO ENTRADA
 ; RECOMENDAMOS TAMBÉM COMENTAR O SIGNIFICADO DE SEUS ESTADOS (0 E 1)
+	
+	#DEFINE LINHA_COM GP2
+	#DEFINE LED_ALARME GP4
+	#DEFINE LED_LOCK GP5
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                           SAÍDAS                                *
@@ -92,12 +91,31 @@
 	MOVWF	W_TEMP		;COPIA W PARA W_TEMP
 	SWAPF	STATUS,W
 	MOVWF	STATUS_TEMP	;COPIA STATUS PARA STATUS_TEMP
-
+	
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                    ROTINA DE INTERRUPÇÃO                        *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ; AQUI SERÃO ESCRITAS AS ROTINAS DE RECONHECIMENTO E TRATAMENTO DAS
 ; INTERRUPÇÕES
+	
+	; VERIFICANDO SE CHEGOU AQUI POR CAUSA DE UMA QUEDA DE TENSÃO
+	BTFSS CMCON, COUT
+	GOTO TENSAO_ABAIXO
+	    BCF GPIO, LED_ALARME
+	    MOVLW VRCON_BAIXO ; FAZENDO HISTERESE PARA UM LIMIAR ABAIXO DO ATUAL
+	    BANK1
+	    MOVWF VRCON
+	    BANK0
+	    GOTO SAI_INT
+	TENSAO_ABAIXO
+	    BSF GPIO, LED_ALARME
+	    MOVLW VRCON_ALTO ; FAZENDO HISTERESE PARA UM LIMIAR ACIMA DO ATUAL
+	    BANK1
+	    MOVWF VRCON
+	    BANK0
+	    ; CONTAR UMA QUEDA DE TENSÃO. NA EEPROM DIRETAMENTE OU NA MEMÓRIA?
+	    
+	    GOTO SAI_INT
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                 ROTINA DE SAÍDA DA INTERRUPÇÃO                  *
@@ -150,48 +168,74 @@ AGUARDA
 	BANK0				;POSICIONA PARA BANK 0
 	RETURN
 
-SUBROTINA1
-
-	;CORPO DA ROTINA
-
-	RETURN
-
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                     INICIO DO PROGRAMA                          *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
-INICIO
+MAIN
 	BANK1				;ALTERA PARA O BANCO 1
 	MOVLW	B'00000000' ;CONFIGURA TODAS AS PORTAS DO GPIO (PINOS)
 	MOVWF	TRISIO		;COMO SAÍDAS
 	CLRF	ANSEL 		;DEFINE PORTAS COMO Digital I/O
-	MOVLW	B'00000100'
-	MOVWF	OPTION_REG	;DEFINE OPÇÕES DE OPERAÇÃO
-	MOVLW	B'00000000'
+	MOVLW	B'01001111'
+	MOVWF	OPTION_REG	;PULL-UPS, GP2 INT NA SUBIDA; PRESCALER 1:128 NO WDT
+	MOVLW	B'10000000'
 	MOVWF	INTCON		;DEFINE OPÇÕES DE INTERRUPÇÕES
 	BANK0				;RETORNA PARA O BANCO
 	MOVLW	B'00000111'
 	MOVWF	CMCON		;DEFINE O MODO DE OPERAÇÃO DO COMPARADOR ANALÓGICO
 
-;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-;*                     INICIALIZAÇÃO DAS VARIÁVEIS                 *
-;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-;*                     ROTINA PRINCIPAL                            *
-;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-MAIN
-
-	;CORPO DA ROTINA PRINCIPAL
-	MOVLW	.29
-	MOVWF	DADO
-	MOVLW	.8
-	CALL	GRAVA_EEPROM
-	CLRF	DADO
-	MOVLW	.8
-	CALL	LE_EEPROM
-FIM
-	GOTO FIM
+	; SETUP DO MODO SLEEP
+	BCF GPIO, LED_LOCK ; APAGAR LED DE LOCK
+	CLRF CONT_WDT ; ZERANDO O CONTADOR DE ESTOUROS DO WDT
+	; DESLIGAR AS COISAS
+	
+	; DORMINDO POR 5 SEGUNDOS
+	DORMIR
+	MOVWF CONT_WDT
+	SUBLW .2
+	BTFSC STATUS, Z
+	GOTO ULTIMO_SLEEP
+	    INCF CONT_WDT
+	    CLRWDT
+	    SLEEP
+	    GOTO DORMIR
+	ULTIMO_SLEEP
+	    ; MUDANDO O PRESCALER PRA DORMIR MAIS 0.6 SEGUNDOS
+	    BANK1
+	    BCF OPTION_REG, 0
+	    BCF OPTION_REG, 1
+	    BSF OPTION_REG, 2
+	    BANK0
+	    CLRWDT
+	    SLEEP
+	
+	; SEGURANDO A LINHA DE COMUNICAÇÃO EM HIGH POR UM TEMPO PRA PEGAR O LOCK
+	; (PEGAR O LOCK SIGNIFICA SINALIZAR O OUTRO PIC QUE TÁ NA HORA DELE MIMIR)
+	BANK1
+	BCF TRISIO, LINHA_COM ; TIRANDO A LINHA DE COMUNICAÇÃO DE ALTA IMPEDÂNCIA
+	BANK0
+	BSF GPIO, LINHA_COM
+	MOVLW .10
+	MOVWF CONT_PEGAR_LOCK
+	PEGANDO_LOCK
+	    DECFSZ CONT_PEGAR_LOCK
+	    GOTO PEGANDO_LOCK
+	
+	; INDICANDO QUE O PIC EXECUTANDO ESTA PARTE DO CÓDIGO EM DIANTE ESTÁ ACORDADO
+	BSF GPIO, LED_LOCK
+	
+	; DEIXAR A LINHA DE COMUNICAÇÃO EM PULL-UP
+	BANK1
+	BSF TRISIO, LINHA_COM
+	BSF WPU, LINHA_COM
+	BANK0
+	
+	; ESPERANDO POR UMA SINALIZAÇÃO NA LINHA DE COMUNICAÇÃO PARA PODER IR DORMIR
+	ESPERAR_TROCA_LOCK
+	    BTFSS GPIO, LINHA_COM
+	    GOTO ESPERAR_TROCA_LOCK
+	    GOTO MAIN
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                       FIM DO PROGRAMA                           *
