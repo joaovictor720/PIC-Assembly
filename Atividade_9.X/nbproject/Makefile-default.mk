@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=../Teste_EEPROM.X/atv9.ASM
+SOURCEFILES_QUOTED_IF_SPACED=atv9.ASM
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/566988059/atv9.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/566988059/atv9.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/atv9.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/atv9.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/_ext/566988059/atv9.o
+OBJECTFILES=${OBJECTDIR}/atv9.o
 
 # Source Files
-SOURCEFILES=../Teste_EEPROM.X/atv9.ASM
+SOURCEFILES=atv9.ASM
 
 
 CFLAGS=
@@ -94,22 +94,22 @@ MP_LINKER_DEBUG_OPTION=
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: assemble
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/_ext/566988059/atv9.o: ../Teste_EEPROM.X/atv9.ASM  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/566988059" 
-	@${RM} ${OBJECTDIR}/_ext/566988059/atv9.o.d 
-	@${RM} ${OBJECTDIR}/_ext/566988059/atv9.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/_ext/566988059/atv9.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_SIMULATOR=1 -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/_ext/566988059/atv9.lst\\\" -e\\\"${OBJECTDIR}/_ext/566988059/atv9.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/_ext/566988059/atv9.o\\\" \\\"../Teste_EEPROM.X/atv9.ASM\\\" 
-	@${DEP_GEN} -d "${OBJECTDIR}/_ext/566988059/atv9.o"
-	@${FIXDEPS} "${OBJECTDIR}/_ext/566988059/atv9.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+${OBJECTDIR}/atv9.o: atv9.ASM  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/atv9.o.d 
+	@${RM} ${OBJECTDIR}/atv9.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/atv9.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_SIMULATOR=1 -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/atv9.lst\\\" -e\\\"${OBJECTDIR}/atv9.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/atv9.o\\\" \\\"atv9.ASM\\\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/atv9.o"
+	@${FIXDEPS} "${OBJECTDIR}/atv9.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
 else
-${OBJECTDIR}/_ext/566988059/atv9.o: ../Teste_EEPROM.X/atv9.ASM  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/566988059" 
-	@${RM} ${OBJECTDIR}/_ext/566988059/atv9.o.d 
-	@${RM} ${OBJECTDIR}/_ext/566988059/atv9.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/_ext/566988059/atv9.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/_ext/566988059/atv9.lst\\\" -e\\\"${OBJECTDIR}/_ext/566988059/atv9.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/_ext/566988059/atv9.o\\\" \\\"../Teste_EEPROM.X/atv9.ASM\\\" 
-	@${DEP_GEN} -d "${OBJECTDIR}/_ext/566988059/atv9.o"
-	@${FIXDEPS} "${OBJECTDIR}/_ext/566988059/atv9.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+${OBJECTDIR}/atv9.o: atv9.ASM  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/atv9.o.d 
+	@${RM} ${OBJECTDIR}/atv9.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/atv9.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/atv9.lst\\\" -e\\\"${OBJECTDIR}/atv9.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/atv9.o\\\" \\\"atv9.ASM\\\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/atv9.o"
+	@${FIXDEPS} "${OBJECTDIR}/atv9.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
 endif
 
