@@ -98,7 +98,11 @@ ${OBJECTDIR}/atv9.o: atv9.ASM  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/atv9.o.d 
 	@${RM} ${OBJECTDIR}/atv9.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/atv9.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_SIMULATOR=1 -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/atv9.lst\\\" -e\\\"${OBJECTDIR}/atv9.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/atv9.o\\\" \\\"atv9.ASM\\\" 
+	@${FIXDEPS} dummy.d -e "/home/jv/MPLABXProjects/Atividade_9.X/atv9.ERR" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_SIMULATOR=1 -q -p$(MP_PROCESSOR_OPTION) -u  $(ASM_OPTIONS)    \\\"/home/jv/MPLABXProjects/Atividade_9.X/atv9.ASM\\\" 
+	@${MV}  /home/jv/MPLABXProjects/Atividade_9.X/atv9.O ${OBJECTDIR}/atv9.o
+	@${MV}  /home/jv/MPLABXProjects/Atividade_9.X/atv9.ERR ${OBJECTDIR}/atv9.o.err
+	@${MV}  /home/jv/MPLABXProjects/Atividade_9.X/atv9.LST ${OBJECTDIR}/atv9.o.lst
+	@${RM}  /home/jv/MPLABXProjects/Atividade_9.X/atv9.HEX 
 	@${DEP_GEN} -d "${OBJECTDIR}/atv9.o"
 	@${FIXDEPS} "${OBJECTDIR}/atv9.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
@@ -107,7 +111,11 @@ ${OBJECTDIR}/atv9.o: atv9.ASM  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/atv9.o.d 
 	@${RM} ${OBJECTDIR}/atv9.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/atv9.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/atv9.lst\\\" -e\\\"${OBJECTDIR}/atv9.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/atv9.o\\\" \\\"atv9.ASM\\\" 
+	@${FIXDEPS} dummy.d -e "/home/jv/MPLABXProjects/Atividade_9.X/atv9.ERR" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  $(ASM_OPTIONS)    \\\"/home/jv/MPLABXProjects/Atividade_9.X/atv9.ASM\\\" 
+	@${MV}  /home/jv/MPLABXProjects/Atividade_9.X/atv9.O ${OBJECTDIR}/atv9.o
+	@${MV}  /home/jv/MPLABXProjects/Atividade_9.X/atv9.ERR ${OBJECTDIR}/atv9.o.err
+	@${MV}  /home/jv/MPLABXProjects/Atividade_9.X/atv9.LST ${OBJECTDIR}/atv9.o.lst
+	@${RM}  /home/jv/MPLABXProjects/Atividade_9.X/atv9.HEX 
 	@${DEP_GEN} -d "${OBJECTDIR}/atv9.o"
 	@${FIXDEPS} "${OBJECTDIR}/atv9.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
