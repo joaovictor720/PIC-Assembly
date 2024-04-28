@@ -2,19 +2,10 @@
 ;*              MODIFICAÇÕES PARA USO COM 12F675                   *
 ;*                FEITAS PELO PROF. MARDSON                        *
 ;*                      OUTUBRO DE 2022                            *
-;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-;*                       NOME DO PROJETO                           *
-;*                           CLIENTE                               *
-;*         DESENVOLVIDO PELA MOSAICO ENGENHARIA E CONSULTORIA      *
-;*   VERSÃO: 1.0                           DATA: 17/06/03          *
-;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-;*                     DESCRIÇÃO DO ARQUIVO                        *
+;*                 BASEADO NO EXEMPLO DO LIVRO                     *
+;*           Desbravando o PIC. David José de Souza                *
 ;*-----------------------------------------------------------------*
 ;*   MODELO PARA O PIC 12F675                                      *
-;*                                                                 *
-;*                                                                 *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -37,20 +28,14 @@
 ; DEFINIÇÃO DOS NOMES E ENDEREÇOS DE TODAS AS VARIÁVEIS UTILIZADAS 
 ; PELO SISTEMA
 
-	CBLOCK	0x20	;ENDEREÇO INICIAL DA MEMÓRIA DE
-					;USUÁRIO
+	CBLOCK	0x20	;ENDEREÇO INICIAL DA MEMÓRIA DE USUÁRIO
 		W_TEMP		;REGISTRADORES TEMPORÁRIOS PARA USO
 		STATUS_TEMP	;JUNTO ÀS INTERRUPÇÕES
-		DADO		;ARMAZENA O DADO PARA A EEPROM
-		
-		CONTADOR
-		PONTEIRO_EEPROM
-		SOMA_L
-		SOMA_H
 
-		;NOVAS VARIÁVEIS
+		;COLOQUE AQUI SUAS NOVAS VARIÁVEIS
 
-	ENDC			;FIM DO BLOCO DE MEMÓRIA
+	ENDC		;FIM DO BLOCO DE DEFINIÇÃO DE VARIÁVEIS
+
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                        FLAGS INTERNOS                           *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -60,24 +45,15 @@
 ;*                         CONSTANTES                              *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ; DEFINIÇÃO DE TODAS AS CONSTANTES UTILIZADAS PELO SISTEMA
-; INICIALIZAÇÃO DA EEPROM, DE ACORDO COM A DESCRIÇÃO NO ARQUIVO "Def_Rega_Formigas.inc"
 	
-	#DEFINE ARRAY .50
-	#DEFINE TAM_ARRAY .32
-
-;A PARTIR DO ENDEREÇO ZERO DA EEPROM, DADOS EM ORDEM ALEATÓRIA
-;	ORG 0x2100
-;	DE	0X89,0X1E,0X39,0X9F,0XC2,0X0C,0XAB,0X33,0X63,0XD3,0X95,0X7B,0X38,0XD6,0X1E,0X48
-;	DE	0XDB,0XD8,0X86,0XFD,0XA5,0XFC,0X0C,0XBE,0X68,0X9B,0XD9,0X10,0XD8,0XEC,0X90,0X91
-;	DE	0XAA,0XBB,0XCC,0XDD,0XEE,0XF1,0XC9,0X77
+	#DEFINE TMR1_500MS_L B'11011100'
+	#DEFINE TMR1_500MS_H B'00001011'
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                           ENTRADAS                              *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ; DEFINIÇÃO DE TODOS OS PINOS QUE SERÃO UTILIZADOS COMO ENTRADA
 ; RECOMENDAMOS TAMBÉM COMENTAR O SIGNIFICADO DE SEUS ESTADOS (0 E 1)
-	
-	#DEFINE AD_INPUT GP2
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                           SAÍDAS                                *
@@ -89,7 +65,7 @@
 ;*                       VETOR DE RESET                            *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	ORG	0x00			;ENDEREÇO INICIAL DE PROCESSAMENTO
+	ORG	0x00		;ENDEREÇO INICIAL DE PROCESSAMENTO
 	GOTO	INICIO
 	
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -98,7 +74,7 @@
 ; ENDEREÇO DE DESVIO DAS INTERRUPÇÕES. A PRIMEIRA TAREFA É SALVAR OS
 ; VALORES DE "W" E "STATUS" PARA RECUPERAÇÃO FUTURA
 
-	ORG	0x04			;ENDEREÇO INICIAL DA INTERRUPÇÃO
+	ORG	0x04		;ENDEREÇO INICIAL DA INTERRUPÇÃO
 	MOVWF	W_TEMP		;COPIA W PARA W_TEMP
 	SWAPF	STATUS,W
 	MOVWF	STATUS_TEMP	;COPIA STATUS PARA STATUS_TEMP
@@ -127,37 +103,11 @@ SAI_INT
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ; CADA ROTINA OU SUBROTINA DEVE POSSUIR A DESCRIÇÃO DE FUNCIONAMENTO
 ; E UM NOME COERENTE ÀS SUAS FUNÇÕES.
-LE_EEPROM
-;LER DADO DA EEPROM, CUJO ENDEREÇO É INDICADO EM W
-;O DADO LIDO RETORNA EM W
-	ANDLW	.127		;LIMITA ENDEREÇO MAX. 127
-	BANK1				;ACESSO VIA BANK 1
-	MOVWF	EEADR		;INDICA O END. DE LEITURA
-	BSF		EECON1,RD	;INICIA O PROCESSO DE LEITURA
-	MOVF	EEDATA,W	;COLOCA DADO LIDO EM W
-	BANK0				;POSICIONA PARA BANK 0
-	RETURN
 
-GRAVA_EEPROM
-;ESCREVE UM DADO NA EEPROM, CUJO ENDEREÇO É INDICADO EM W
-;O DADO A SER ESCRITO DEVE ESTAR ARMAZENADO NA VARIÁVEL DADO
-	ANDLW	.127		;LIMITA ENDEREÇO MAX. 127
-	BANK1				;ACESSO VIA BANK 1
-	MOVWF	EEADR
-	MOVF	DADO,W
-	MOVWF	EEDATA
-	BSF		EECON1,WREN ;HABILITA ESCRITA
-	BCF		INTCON,GIE	;DESLIGA INTERRUPÇÕES
-	MOVLW	B'01010101'	;DESBLOQUEIA ESCRITA
-	MOVWF	EECON2		;
-	MOVLW	B'10101010'	;DESBLOQUEIA ESCRITA
-	MOVWF	EECON2		;
-	BSF		EECON1,WR ;INICIA A ESCRITA
-AGUARDA
-	BTFSC	EECON1,WR ;TERMINOU?
-	GOTO	AGUARDA
-	BSF		INTCON,GIE ;HABILITA INTERRUPÇÕES
-	BANK0				;POSICIONA PARA BANK 0
+SUBROTINA1
+
+	;CORPO DA ROTINA
+
 	RETURN
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -167,106 +117,35 @@ AGUARDA
 INICIO
 	BANK1			;ALTERA PARA O BANCO 1
 	MOVLW	B'00000100'
-	MOVWF	TRISIO		;GP2 COMO ENTRADA
-	MOVLW	B'00010100'
-	MOVWF	ANSEL 		;FOSC/8, GP2 COMO ENTRADA ANALÓGICA
+	MOVWF	TRISIO		;CONFIGURA TODAS AS PORTAS COMO SAÍDAS
+	CLRF	ANSEL 		;DEFINE PORTAS COMO Digital I/O
 	MOVLW	B'00000100'
 	MOVWF	OPTION_REG	;DEFINE OPÇÕES DE OPERAÇÃO
-	MOVLW	B'00000000'
+	MOVLW	B'11000000'
 	MOVWF	INTCON		;DEFINE OPÇÕES DE INTERRUPÇÕES
-	BANK0				;RETORNA PARA O BANCO
+	MOVLW	B'00000001'
+	MOVWF	PIE1
+	BANK0			;RETORNA PARA O BANCO
 	MOVLW	B'00000111'
 	MOVWF	CMCON		;DEFINE O MODO DE OPERAÇÃO DO COMPARADOR ANALÓGICO
-	
-	; LEFT JUSTIFIED, VDD COMO REF, LEITURA NA GP2, INICIANDO LEITURA, HABILITANDO CONVERSOR
-	MOVLW	B'00001011'
-	MOVWF	ADCON0
+	MOVLW	B'00110101'
+	MOVWF	T1CON
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                     INICIALIZAÇÃO DAS VARIÁVEIS                 *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
-	MOVLW B'01001110'
-	SUBLW B'11001010'
-	
+	MOVLW TMR1_500MS_H
+	MOVWF TMR1H
+	MOVLW TMR1_500MS_L
+	MOVWF TMR1L
+
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                     ROTINA PRINCIPAL                            *
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 MAIN
-	; LENDO OS VALORES COM O CONVERSOR A/D
-	MOVLW ARRAY
-	MOVWF FSR ; APONTANDO PARA O INÍCIO DO ARRAY
-	MOVLW TAM_ARRAY
-	MOVWF CONTADOR ; INICIANDO CONTADOR DA DURAÇÃO DO CICLO DE ESCRITA
-	MEDIR
-	BSF ADCON0, GO
-	ESPERAR_MEDIDA
-	    BTFSC ADCON0, GO
-	    GOTO ESPERAR_MEDIDA
-	MOVFW ADRESH ; PEGANDO VALOR MEDIDO PELO CONVERSOR A/D
-	MOVWF INDF ; PASSANDO VALOR MEDIDO PARA A POSIÇÃO ATUAL DO ARRAY
-	INCF FSR
-	DECFSZ CONTADOR ; DECREMENTANDO O PONTEIRO EM DIREÇÃO AO PRIMEIRO ELEMENTO
-	GOTO MEDIR
 	
-	; SOMAR OS ELEMENTOS DO ARRAY
-	MOVLW TAM_ARRAY
-	MOVWF CONTADOR
-	MOVLW ARRAY
-	MOVWF FSR ; COMEÇANDO A SOMA PELO PRIMEIRO ELEMENTO
-	SOMAR
-	MOVFW INDF
-	ADDWF SOMA_L
-	BTFSS STATUS, C
-	GOTO SEM_CARRY
-	    INCF SOMA_H
-	SEM_CARRY
-	INCF FSR
-	DECFSZ CONTADOR
-	GOTO SOMAR
-	
-	; DIVIDIR A SOMA POR 32
-	BCF STATUS, C ; LIMPANDO O CARRY PARA NÃO CORROMPER AS ROTAÇÕES
-	; FAZENDO 5 ROTAÇÕES À DIREITA NA VARIÁVEL SOMA DE 16 BITS
-	; REAPROVEITANDO O CARRY DA ROTAÇÃO DO HIGH PARA COLOCAR NO MSB DO LOW
-	RRF SOMA_H
-	RRF SOMA_L
-	RRF SOMA_H
-	RRF SOMA_L
-	RRF SOMA_H
-	RRF SOMA_L
-	RRF SOMA_H
-	RRF SOMA_L
-	RRF SOMA_H
-	RRF SOMA_L, W ; ESTA ÚLTIMA ROTAÇÃO JÁ VAI CONTER O VALOR DA MÉDIA FINAL
-	;MOVFW SOMA_L
-	;IORWF MEDIA
-	
-	; GRAVANDO A MEDIA EM 0X0 DA EEPROM
-	;MOVFW MEDIA
-	MOVWF DADO ; O VALOR DA MÉDIA JÁ ESTÁ COLOCADO NO WREG
-	MOVLW 0X0
-	CALL GRAVA_EEPROM
-	
-	; SALVANDO OS VALORES MEDIDOS NA EEPROM
-	MOVLW TAM_ARRAY
-	MOVWF CONTADOR ; INICIANDO CONTADOR DA DURAÇÃO DO CICLO DE ESCRITA
-	MOVLW ARRAY
-	MOVWF FSR ; INICIANDO PONTEIRO DO ARRAY
-	CLRF PONTEIRO_EEPROM
-	INCF PONTEIRO_EEPROM ; APONTANDO PARA 0x1 DA EEPROM, PARA GRAVAR O ARRAY
-	GRAVAR_ARRAY
-	    MOVFW INDF
-	    MOVWF DADO ; SALVANDO O ELEMENTO ATUAL DO ARRAY NO BUFFER DA EEPROM
-	    MOVFW PONTEIRO_EEPROM ; PASSANDO O ENDEREÇO ATUAL PARA ESCRITA NA EEPROM
-	    CALL GRAVA_EEPROM
-	    INCF FSR
-	    INCF PONTEIRO_EEPROM
-	    DECFSZ CONTADOR
-	    GOTO GRAVAR_ARRAY
-	
-FIM
-	GOTO FIM
+	GOTO	MAIN
 
 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;*                       FIM DO PROGRAMA                           *

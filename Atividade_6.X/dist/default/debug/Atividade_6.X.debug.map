@@ -1,14 +1,13 @@
 MPLINK 5.08, LINKER
-Linker Map File - Created Sun Mar 24 00:45:29 2024
+Linker Map File - Created Fri Apr 26 14:59:21 2024
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
                 ---------  ---------  ---------  ---------  ---------
                    .org_0       code   0x000000    program   0x000000
-                   .org_2       code   0x000000    program   0x000002
-                   .org_3       code   0x000004    program   0x0000ca
+                   .org_1       code   0x000000    program   0x000002
+                   .org_2       code   0x000004    program   0x0000ca
 .config_2007_/HOME/JV/MPLABXPROJECTS/ATIVIDAD       code   0x002007    program   0x000002
-                   .org_1       code   0x002100    program   0x000050
 
 
 
@@ -18,8 +17,7 @@ Linker Map File - Created Sun Mar 24 00:45:29 2024
                             0x000000    0x000000      
                             0x000004    0x000068      
                             0x002007    0x002007      
-                            0x002100    0x002127      
-            143 out of 1158 program addresses used, program memory utilization is 12%
+            103 out of 1158 program addresses used, program memory utilization is 8%
 
 
 

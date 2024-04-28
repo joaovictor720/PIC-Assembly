@@ -1,4 +1,4 @@
-MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-23-2024  21:45:29         PAGE  1
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   4-26-2024  11:59:21         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00041                                         ;USUÁRIO
   00000020            00042                 W_TEMP          ;REGISTRADORES TEMPORÁRIOS PARA USO
   00000021            00043                 STATUS_TEMP     ;JUNTO ÀS INTERRUPÇÕES
-MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-23-2024  21:45:29         PAGE  2
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   4-26-2024  11:59:21         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -88,22 +88,10 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00066         #DEFINE TAM_ARRAY .32
                       00067 
                       00068 ;A PARTIR DO ENDEREÇO ZERO DA EEPROM, DADOS EM ORDEM ALEATÓRIA
-2100                  00069         ORG 0x2100
-2100   0089 001E 0039 00070         DE      0X89,0X1E,0X39,0X9F,0XC2,0X0C,0XAB,0X33,0X63,0XD3,0X95,0X7B,0X38,0XD6,0X1E,0X48
-       009F 00C2 000C 
-       00AB 0033 0063 
-       00D3 0095 007B 
-       0038 00D6 001E 
-       0048 
-2110   00DB 00D8 0086 00071         DE      0XDB,0XD8,0X86,0XFD,0XA5,0XFC,0X0C,0XBE,0X68,0X9B,0XD9,0X10,0XD8,0XEC,0X90,0X91
-       00FD 00A5 00FC 
-       000C 00BE 0068 
-       009B 00D9 0010 
-       00D8 00EC 0090 
-       0091 
-2120   00AA 00BB 00CC 00072         DE      0XAA,0XBB,0XCC,0XDD,0XEE,0XF1,0XC9,0X77
-       00DD 00EE 00F1 
-       00C9 0077 
+                      00069 ;       ORG 0x2100
+                      00070 ;       DE      0X89,0X1E,0X39,0X9F,0XC2,0X0C,0XAB,0X33,0X63,0XD3,0X95,0X7B,0X38,0XD6,0X1E,0X48
+                      00071 ;       DE      0XDB,0XD8,0X86,0XFD,0XA5,0XFC,0X0C,0XBE,0X68,0X9B,0XD9,0X10,0XD8,0XEC,0X90,0X91
+                      00072 ;       DE      0XAA,0XBB,0XCC,0XDD,0XEE,0XF1,0XC9,0X77
                       00073 
                       00074 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
                       00075 ;*                           ENTRADAS                              *
@@ -116,12 +104,6 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00082 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
                       00083 ;*                           SAÍDAS                                *
                       00084 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-23-2024  21:45:29         PAGE  3
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
                       00085 ; DEFINIÇÃO DE TODOS OS PINOS QUE SERÃO UTILIZADOS COMO SAÍDA
                       00086 ; RECOMENDAMOS TAMBÉM COMENTAR O SIGNIFICADO DE SEUS ESTADOS (0 E 1)
                       00087 
@@ -134,6 +116,12 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00094         
                       00095 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
                       00096 ;*                    INÍCIO DA INTERRUPÇÃO                        *
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   4-26-2024  11:59:21         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
                       00097 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
                       00098 ; ENDEREÇO DE DESVIO DAS INTERRUPÇÕES. A PRIMEIRA TAREFA É SALVAR OS
                       00099 ; VALORES DE "W" E "STATUS" PARA RECUPERAÇÃO FUTURA
@@ -175,12 +163,6 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
 000E   009B           00135         MOVWF   EEADR           ;INDICA O END. DE LEITURA
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-23-2024  21:45:29         PAGE  4
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
 000F   141C           00136         BSF             EECON1,RD       ;INICIA O PROCESSO DE LEITURA
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
 0010   081A           00137         MOVF    EEDATA,W        ;COLOCA DADO LIDO EM W
@@ -193,6 +175,12 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 0013   397F           00144         ANDLW   .127            ;LIMITA ENDEREÇO MAX. 127
 0014   1683           00145         BANK1                           ;ACESSO VIA BANK 1
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   4-26-2024  11:59:21         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
 0015   009B           00146         MOVWF   EEADR
 0016   0822           00147         MOVF    DADO,W
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
@@ -234,12 +222,6 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 002B   3000           00175         MOVLW   B'00000000'
 002C   008B           00176         MOVWF   INTCON          ;DEFINE OPÇÕES DE INTERRUPÇÕES
 002D   1283           00177         BANK0                           ;RETORNA PARA O BANCO
-MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-23-2024  21:45:29         PAGE  5
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
 002E   3007           00178         MOVLW   B'00000111'
 002F   0099           00179         MOVWF   CMCON           ;DEFINE O MODO DE OPERAÇÃO DO COMPARADOR ANALÓGICO
                       00180         
@@ -252,6 +234,12 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00187 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
                       00188         
 0032   304E           00189         MOVLW B'01001110'
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   4-26-2024  11:59:21         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
 0033   3CCA           00190         SUBLW B'11001010'
                       00191         
                       00192 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -293,12 +281,6 @@ Message[305]: Using default destination of 1 (file).
 Message[305]: Using default destination of 1 (file).
 0048   0AA6           00222             INCF SOMA_H
 Warning[207]: Found label after column 1. (SEM_CARRY)
-MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-23-2024  21:45:29         PAGE  6
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
 0049                  00223         SEM_CARRY
 Message[305]: Using default destination of 1 (file).
 0049   0A84           00224         INCF FSR
@@ -311,6 +293,12 @@ Message[305]: Using default destination of 1 (file).
                       00230         ; FAZENDO 5 ROTAÇÕES À DIREITA NA VARIÁVEL SOMA DE 16 BITS
                       00231         ; REAPROVEITANDO O CARRY DA ROTAÇÃO DO HIGH PARA COLOCAR NO MSB DO LOW
 Message[305]: Using default destination of 1 (file).
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   4-26-2024  11:59:21         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
 004D   0CA6           00232         RRF SOMA_H
 Message[305]: Using default destination of 1 (file).
 004E   0CA5           00233         RRF SOMA_L
@@ -352,12 +340,6 @@ Warning[207]: Found label after column 1. (GRAVAR_ARRAY)
 0061   00A2           00260             MOVWF DADO ; SALVANDO O ELEMENTO ATUAL DO ARRAY NO BUFFER DA EEPROM
 0062   0824           00261             MOVFW PONTEIRO_EEPROM ; PASSANDO O ENDEREÇO ATUAL PARA ESCRITA NA EEPROM
 0063   2013           00262             CALL GRAVA_EEPROM
-MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-23-2024  21:45:29         PAGE  7
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
 Message[305]: Using default destination of 1 (file).
 0064   0A84           00263             INCF FSR
 Message[305]: Using default destination of 1 (file).
@@ -370,11 +352,17 @@ Message[305]: Using default destination of 1 (file).
 0068   2868           00269         GOTO FIM
                       00270 
                       00271 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   4-26-2024  11:59:21         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
                       00272 ;*                       FIM DO PROGRAMA                           *
                       00273 ;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
                       00274 
                       00275         END
-MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-23-2024  21:45:29         PAGE  8
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   4-26-2024  11:59:21         PAGE  8
 
 
 SYMBOL TABLE
@@ -433,7 +421,7 @@ F                                 00000001
 FIM                               00000068
 FSR                               00000004
 GIE                               00000007
-MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-23-2024  21:45:29         PAGE  9
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   4-26-2024  11:59:21         PAGE  9
 
 
 SYMBOL TABLE
@@ -492,7 +480,7 @@ NOT_POR                           00000001
 NOT_T1SYNC                        00000002
 NOT_TO                            00000004
 OPTION_REG                        00000081
-MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-23-2024  21:45:29         PAGE 10
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   4-26-2024  11:59:21         PAGE 10
 
 
 SYMBOL TABLE
@@ -551,7 +539,7 @@ TRISIO4                           00000004
 TRISIO5                           00000005
 VCFG                              00000006
 VR0                               00000000
-MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-23-2024  21:45:29         PAGE 11
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   4-26-2024  11:59:21         PAGE 11
 
 
 SYMBOL TABLE
@@ -610,7 +598,7 @@ _PWRTE_OFF                        00003FFF
 _PWRTE_ON                         00003FEF
 _WDTE_OFF                         00003FF7
 _WDTE_ON                          00003FFF
-MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   3-23-2024  21:45:29         PAGE 12
+MPASM 5.77  /HOME/JV/MPLABXPROJECTS/ATIVIDAD   4-26-2024  11:59:21         PAGE 12
 
 
 SYMBOL TABLE
@@ -629,7 +617,6 @@ MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
 0000 : X---XXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
 0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXX------- ----------------
 2000 : -------X-------- ---------------- ---------------- ----------------
-2100 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXX-------- ----------------
 
 All other memory blocks unused.
 
