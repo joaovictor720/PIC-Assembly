@@ -1,0 +1,48 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Sun Apr 28 23:47:42 2024
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                   .org_1       code   0x000004    program   0x000080
+.config_2007_BUILD/DEFAULT/DEBUG/ATV10.O       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000004    0x000043      
+                            0x002007    0x002007      
+            68 out of 1158 program addresses used, program memory utilization is 5%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  DORMIR1   0x000038    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+         ESPERAR_FIM_SYNC   0x00001f    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+             ESPERAR_SYNC   0x000019    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+                   INICIO   0x00000c    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+                     MAIN   0x000019    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+            NAO_LIGAR_GP4   0x00002e    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+                  SAI_INT   0x000007    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  SAI_INT   0x000007    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+                   INICIO   0x00000c    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+             ESPERAR_SYNC   0x000019    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+                     MAIN   0x000019    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+         ESPERAR_FIM_SYNC   0x00001f    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+            NAO_LIGAR_GP4   0x00002e    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+                  DORMIR1   0x000038    program     static /home/jv/MPLABXProjects/Atividade_10.X/atv10.ASM
+
+
